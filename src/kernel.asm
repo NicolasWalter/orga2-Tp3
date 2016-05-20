@@ -2,7 +2,7 @@
 ; ==============================================================================
 ; TRABAJO PRACTICO 3 - System Programming - ORGANIZACION DE COMPUTADOR II - FCEN
 ; ==============================================================================
-
+extern GDT_DESC
 %include "imprimir.mac"
 
 global start
@@ -44,12 +44,33 @@ start:
     ; Habilitar A20
     
     ; Cargar la GDT
-
+    cli ;BATATA
+    LGDT [GDT_DESC] 
     ; Setear el bit PE del registro CR0
-    
-    ; Saltar a modo protegido
+    mov eax, CR0
+    or eax, 1
+    mov cr0, eax 
 
+    ; Saltar a modo protegido
+    jmp 32:modo_protegido
+    modo_protegido: 
+    BITS 32
+    xchg bx, bx
+    mov eax, 695    
+    xchg bx, bx
+
+    xor eax, eax        
+    mov ax, 10000b ;BATATA
+    mov ds, ax
+    mov es, ax
+    mov gs, ax
+    mov ax, 11000b ;BATATAA
+    mov fs, ax
+
+    mov esp, 27000h
+    mov ebp, 27000h
     ; Establecer selectores de segmentos
+
 
     ; Establecer la base de la pila
     

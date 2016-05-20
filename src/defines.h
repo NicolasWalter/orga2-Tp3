@@ -26,10 +26,14 @@
 
 /* Indices en la gdt */
 /* -------------------------------------------------------------------------- */
-#define GDT_COUNT 6
+#define GDT_COUNT 8
 
 #define GDT_IDX_NULL_DESC           0
 
+#define CODIGO_KERNEL_0 4
+#define CODIGO_USER_3 5
+#define DATOS_KERNEL_0  6
+#define DATOS_USER_3 7
 /* Offsets en la gdt */
 /* -------------------------------------------------------------------------- */
 #define GDT_OFF_NULL_DESC           (GDT_IDX_NULL_DESC      << 3)
