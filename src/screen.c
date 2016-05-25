@@ -51,6 +51,18 @@ void print_int(unsigned int n, unsigned int x, unsigned int y, unsigned short at
     p[y][x].a = attr;
 }
 
+void inicializar_en_gris(){
+    ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
+    int i;
+    for (i = 0; i < 50; ++i){
+        int j;
+        for(j=0; j < 80; ++j){
+            p[i][j].c= 0x00;
+            p[i][j].a= 0x77;
+        }
+    }
+}
+
 
 
 

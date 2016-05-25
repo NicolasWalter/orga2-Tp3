@@ -65,7 +65,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x00,           /* base[23:16]  */
         (unsigned char)     0x02,           /* type         */
         (unsigned char)     0x01,           /* s            */
-        (unsigned char)     0x01,           /* dpl          */
+        (unsigned char)     0x00,           /* dpl          */
         (unsigned char)     0x01, //BATATA          /* p            */
         (unsigned char)     0x03,           /* limit[16:19] */
         (unsigned char)     0x00,          /* avl          */
@@ -90,6 +90,23 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x01,           /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
+
+    [VIDEO] = (gdt_entry) {
+        (unsigned short)    0x9F3F,  //batata       /* limit[0:15]  */
+        (unsigned short)    0x8000,  //BATATA       /* base[0:15]   */
+        (unsigned char)     0x0B,    //BATATA       /* base[23:16]  */
+        (unsigned char)     0x02,           /* type         */
+        (unsigned char)     0x01,           /* s            */
+        (unsigned char)     0x00,           /* dpl          */
+        (unsigned char)     0x01, //BATATA          /* p            */
+        (unsigned char)     0x0B,   //batata        /* limit[16:19] */
+        (unsigned char)     0x00,          /* avl          */
+        (unsigned char)     0x00,           /* l            */
+        (unsigned char)     0x01,           /* db           */
+        (unsigned char)     0x01,           /* g            */
+        (unsigned char)     0x00,           /* base[31:24]  */
+    },
+    
     
     
 };

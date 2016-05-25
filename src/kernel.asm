@@ -3,6 +3,10 @@
 ; TRABAJO PRACTICO 3 - System Programming - ORGANIZACION DE COMPUTADOR II - FCEN
 ; ==============================================================================
 extern GDT_DESC
+extern IDT_DESC
+extern inicializar_en_gris
+extern idt_inicializar
+
 %include "imprimir.mac"
 
 global start
@@ -39,44 +43,52 @@ start:
 
     ; Imprimir mensaje de bienvenida
     imprimir_texto_mr iniciando_mr_msg, iniciando_mr_len, 0x07, 0, 0
-    
 
-    ; Habilitar A20
-    
+
+    ; Habilitar A20      
+    call habilitar_A20
+
     ; Cargar la GDT
-    cli ;BATATA
     LGDT [GDT_DESC] 
+
     ; Setear el bit PE del registro CR0
     mov eax, CR0
     or eax, 1
     mov cr0, eax 
 
     ; Saltar a modo protegido
-    jmp 32:modo_protegido
-    modo_protegido: 
+    jmp 0x20:modo_protegido
     BITS 32
-    xchg bx, bx
-    mov eax, 695    
-    xchg bx, bx
 
+    modo_protegido: 
+    mov eax, 695    
+   
+     
+
+
+    ; Establecer selectores de segmentos
     xor eax, eax        
-    mov ax, 10000b ;BATATA
+    mov ax, 110000b     
     mov ds, ax
     mov es, ax
     mov gs, ax
-    mov ax, 11000b ;BATATAA
+	mov ss, ax
+
+    mov ax, 1000000b 
     mov fs, ax
-
-    mov esp, 27000h
-    mov ebp, 27000h
-    ; Establecer selectores de segmentos
-
-
-    ; Establecer la base de la pila
     
+    ; Establecer la base de la pila
+    mov esp, 0x27000
+    mov ebp, 0x27000
+
     ; Imprimir mensaje de bienvenida
+    imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
+
 
     ; Inicializar pantalla
+
+
+    call inicializar_en_gris  ;BATATA PONIENDO COLORES
     
     ; Inicializar el manejador de memoria
  
@@ -93,9 +105,16 @@ start:
     ; Inicializar el scheduler
 
     ; Inicializar la IDT
-    
+        xchg bx,bx
+
+    call idt_inicializar
+    xchg bx,bx
     ; Cargar IDT
- 
+    lidt [IDT_DESC]
+        xchg bx,bx
+
+ 	mov cx, 0
+ 	div cx
     ; Configurar controlador de interrupciones
 
     ; Cargar tarea inicial
