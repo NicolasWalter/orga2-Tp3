@@ -57,7 +57,7 @@ void inicializar_en_gris(){
     for (i = 0; i < 50; ++i){
         int j;
         for(j=0; j < 80; ++j){
-            p[i][j].c= 0x00;
+            p[i][j].c= 0xB2;
             p[i][j].a= 0x77;
         }
     }

@@ -42,5 +42,6 @@
 /* Direcciones de memoria */
 /* -------------------------------------------------------------------------- */
 #define VIDEO_SCREEN            0x000B8000 /* direccion fisica del buffer de video */
+#define PAGE_DIRECTORY_BASE 		0x27000
 
 #endif  /* !__DEFINES_H__ */
