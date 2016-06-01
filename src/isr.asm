@@ -17,6 +17,8 @@ extern fin_intr_pic1
 ;; Sched
 extern sched_proximo_indice
 
+;;Screen
+extern imprimirTecla
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
