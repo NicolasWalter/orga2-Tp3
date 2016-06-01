@@ -8,6 +8,7 @@ extern PAGE_DIRECTORY_BASE
 extern inicializar_en_gris
 extern idt_inicializar
 extern mmu_inicializar
+extern inicializar_directorio_paginas_kernel
 
 %include "imprimir.mac"
 
@@ -88,32 +89,25 @@ start:
 
     ; Inicializar pantalla
     call inicializar_en_gris  ;BATATA PONIENDO COLORES
-	    
-    ; Inicializar el manejador de memoria //BATATA Y ESTO QUE DIFERENCIA TIENE CON LA OTRA WEA
-    xchg bx, bx
-    ; Inicializar el directorio de paginas
+        
+    ; Inicializar el manejador de memoria ;BATATA ORDEN
     call mmu_inicializar
+
+    ; Inicializar el directorio de paginas
+    call inicializar_directorio_paginas_kernel
+
     ; Cargar directorio de paginas
-    xchg bx, bx    
     xor eax, eax
     mov eax, 0x27000 ;BATATA ESTO ES PAGE_DIRECTORY_BASE
-    ;xor eax, eax
-    ;mov eax, 0x3  ; setea pcd y pwd en 0
-    ;and cr3, eax
     mov cr3, eax
-
-    xchg bx, bx    
 
     ; Habilitar paginacion
     mov eax, cr0
-    xchg bx, bx   
-
-    or eax, 0b10000000000000000000000000000000    ;BATATA PAGINACION REVIENTA PERO ESTE VALOR DEBERIA FUNCIONAR (prende el bit 31 de cr0 cuando se hace el mov siguiente)
-                                                  ;Hace lo que deberia, revisar paginacion batata lo hace explotar
-    xchg bx, bx
+    or eax, 0x80000000
     mov cr0, eax 
+
     ; Inicializar tss
-    xchg bx, bx   
+
     ; Inicializar tss de la tarea Idle
 
     ; Inicializar el scheduler
@@ -122,11 +116,12 @@ start:
 
 
     call idt_inicializar
-    xchg bx,bx
+
     ; Cargar IDT
     lidt [IDT_DESC]
     mov cx, 0
  	div cx
+
     ; Configurar controlador de interrupciones BATATA
 
     ; Cargar tarea inicial

@@ -62,8 +62,3 @@ void inicializar_en_gris(){
         }
     }
 }
-
-
-
-
-
