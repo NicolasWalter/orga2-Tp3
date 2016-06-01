@@ -62,3 +62,29 @@ void inicializar_en_gris(){
         }
     }
 }
+
+
+// void print(text, x,y, attr) ANTIBATATA ??
+void imprimirTecla(char input){
+    if(input==0x11){
+        print("w",80,0,3);
+    }else if(input==0x1e){
+        print("a",80,0,3);
+    }else if(input==0x1f){
+        print("s",80,0,3);
+    }else if(input==0x20){
+        print("d",80,0,3);
+    }else if(input==0x17){
+        print("i",80,0,3);
+    }else if(input==0x24){
+        print("j",80,0,3);
+    }else if(input==0x25){
+        print("k",80,0,3);
+    }else if(input==0x26){
+        print("l",80,0,3);
+    }else if(input==0x2a){
+        print("LShift",80,0,3);
+    }else if(input==0x36){
+        print("RShift",80,0,3);
+    }
+}

@@ -116,17 +116,69 @@ ISR 17
 ISR 18
 ISR 19
 
-;;
+;;;
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
+global _isr32
+_isr32:
+
+    pushad
+    call proximo_reloj
+    ; asi de choto o verso naco/fran ?? BATATA
+    call fin_intr_pic1
+    popad
+    iret
+
+
+
+
 
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
 
+;quiero que sea la 33
+global _isr33
+_isr33:
+  
+
+    ;1 preservar los registros
+    pushad
+
+    ;2 comunica al pic que ya se atendio la interrupcion
+    call fin_intr_pic1
+
+    ;3 llamo al tecado
+    in al, 0x60
+
+    ;Por las dudas
+    mov bl, al
+    xor eax, eax
+    mov al, bl
+
+    push eax
+    ;Imprimir en la esq sup derecha la tecla
+    
+    call imprimirTecla
+    pop eax
+    ; 4 restaurar registros
+    popad
+    iret
+
 ;;
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
+
+global _isr102
+_isr102:
+
+    
+    call fin_intr_pic1
+    mov eax,0x42
+    iret
+
+
+
 
 %define DONDE  0x124
 %define SOY    0xA6A

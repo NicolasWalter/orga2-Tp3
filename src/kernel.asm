@@ -10,6 +10,10 @@ extern idt_inicializar
 extern mmu_inicializar
 extern inicializar_directorio_paginas_kernel
 
+
+extern resetear_pic
+extern habilitar_pic
+
 %include "imprimir.mac"
 
 global start
@@ -122,11 +126,15 @@ start:
     mov cx, 0
  	div cx
 
-    ; Configurar controlador de interrupciones BATATA
+       ; Configurar controlador de interrupciones ANTIBATATA
+    call resetear_pic
+    call habilitar_pic
+
 
     ; Cargar tarea inicial
 
-    ; Habilitar interrupciones BATATA
+    ; Habilitar interrupciones ANTIBATATA
+    sti;cco
 
     ; Saltar a la primera tarea: Idle
 

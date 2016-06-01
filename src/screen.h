@@ -28,5 +28,6 @@ void print_int(unsigned int n, unsigned int x, unsigned int y, unsigned short at
 
 void inicializar_en_gris();
 
+void imprimirTecla(char);
 
 #endif  /* !__SCREEN_H__ */
