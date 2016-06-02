@@ -15,6 +15,12 @@
 
 void mmu_inicializar();
 void inicializar_directorio_paginas();
+unsigned int mmu_proxima_pagina_fisica_libre();
+void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite);
+void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3);
+unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y, unsigned char privilege /*batata*/, unsigned char readOrWrite /*batata*/, unsigned int tipo );
+void inicializar_directorio_paginas_kernel();
+
 
 typedef struct str_directory_entry {
     unsigned char   present:1;
@@ -31,6 +37,8 @@ typedef struct str_table_entry {
     unsigned int    ceros:19;
     unsigned short  dirBase:10;
 } __attribute__((__packed__)) table_entry;
+
+
 
 #endif	/* !__MMU_H__ */
 

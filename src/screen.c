@@ -57,34 +57,37 @@ void inicializar_en_gris(){
     for (i = 0; i < 50; ++i){
         int j;
         for(j=0; j < 80; ++j){
-            p[i][j].c= 0xB2;
-            p[i][j].a= 0x77;
+            if(i < 1 || i > 44){
+                p[i][j].c = 0xFF;
+                p[i][j].a = C_BG_BLACK + C_BG_BLACK;
+            } else {
+                p[i][j].c = 0xB2;
+                p[i][j].a = C_FG_LIGHT_GREY + C_BG_BLACK;
+            }
         }
     }
 }
 
-
-// void print(text, x,y, attr) ANTIBATATA ??
 void imprimirTecla(char input){
     if(input==0x11){
-        print("w",80,0,3);
+        print("w",80,1,3);
     }else if(input==0x1e){
-        print("a",80,0,3);
+        print("a",80,1,3);
     }else if(input==0x1f){
-        print("s",80,0,3);
+        print("s",80,1,3);
     }else if(input==0x20){
-        print("d",80,0,3);
+        print("d",80,1,3);
     }else if(input==0x17){
-        print("i",80,0,3);
+        print("i",80,1,3);
     }else if(input==0x24){
-        print("j",80,0,3);
+        print("j",80,1,3);
     }else if(input==0x25){
-        print("k",80,0,3);
+        print("k",80,1,3);
     }else if(input==0x26){
-        print("l",80,0,3);
+        print("l",80,1,3);
     }else if(input==0x2a){
-        print("LShift",80,0,3);
+        print("LShift",80,1,3);
     }else if(input==0x36){
-        print("RShift",80,0,3);
+        print("RShift",80,1,3);
     }
 }

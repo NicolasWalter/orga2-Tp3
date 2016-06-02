@@ -31,6 +31,9 @@ iniciando_mr_len equ    $ - iniciando_mr_msg
 iniciando_mp_msg db     'Iniciando kernel (Modo Protegido)...'
 iniciando_mp_len equ    $ - iniciando_mp_msg
 
+mostrarNombreGrupo_msg db 'El que mucho abarca, poco aprieta.'
+mostrarNombreGrupo_len equ $ - mostrarNombreGrupo_msg
+
 ;;
 ;; Seccion de código.
 ;; -------------------------------------------------------------------------- ;;
@@ -109,6 +112,9 @@ start:
     mov eax, cr0
     or eax, 0x80000000
     mov cr0, eax 
+    
+    ;Imprimir el nombre del grupo 
+    imprimir_texto_mp mostrarNombreGrupo_msg, mostrarNombreGrupo_len, 0x07, 0, (80 - mostrarNombreGrupo_len)
 
     ; Inicializar tss
 
@@ -126,15 +132,15 @@ start:
   ;   mov cx, 0
  	; div cx
 
-       ; Configurar controlador de interrupciones ANTIBATATA
+       ; Configurar controlador de interrupciones
     call resetear_pic
     call habilitar_pic
 
 
     ; Cargar tarea inicial
 
-    ; Habilitar interrupciones ANTIBATATA
-    sti;cco
+    ; Habilitar interrupciones
+    sti
 
     ; Saltar a la primera tarea: Idle
 

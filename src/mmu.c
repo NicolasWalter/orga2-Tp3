@@ -68,28 +68,7 @@ void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3){
 	}
 }
 
-// void inicializar_directorio_paginas_tarea(unsigned int virtual, unsigned char privilege, unsigned char readOrWrite) {
-	
-// 	unsigned int newDirectoryAddress = mmu_proxima_pagina_fisica_libre();
-
-// 	directory_entry* pde = (directory_entry*) newDirectoryAddress;
-
-// 	for (i = 0; i < 1024; ++i){
-// 			pde[i].dirBase = 0;
-// 			pde[i].present = 0;
-// 			pde[i].rw = 0;
-// 			pde[i].priv = 0;	
-// 	}	
-
-// 	table_entry* pte = (directory_entry*) (pde[PDE_INDEX(virtual)]dirBase)
-
-// 	pde[PDE_INDEX(virtual)].dirBase = tableAddress >> 12;
-// 	pde[PDE_INDEX(virtual)].present = 1;
-// 	pde[PDE_INDEX(virtual)].rw = readOrWrite;
-// 	pde[PDE_INDEX(virtual)].priv = privilege;	
-
-// }
-unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y, unsigned char privilege /*batata*/, unsigned char readOrWrite /*batata*/, unsigned int tipo ) {
+unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y, unsigned char privilege, unsigned char readOrWrite, unsigned int tipo){
 	
 	unsigned int cr3 = mmu_proxima_pagina_fisica_libre();
 	directory_entry* pde = (directory_entry*) cr3;
@@ -122,7 +101,6 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 		pte[i].priv = 0;
 	}
 
-	//void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite);
 	mmu_mapear_pagina(0x8000000,cr3,fisica, privilege, readOrWrite);
 	
 
@@ -142,7 +120,6 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 	}
 
 	mmu_unmapear_pagina(0x8000000,cr3);
-	//void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3){
 
 return cr3;
 
@@ -150,7 +127,7 @@ return cr3;
 
 
 
-void inicializar_directorio_paginas_kernel() {
+void inicializar_directorio_paginas_kernel() {    //BATATA DEVOLVER CR3?
 	int i;
 	unsigned int* pageDirectory = (unsigned int*) 0x27000;
 	*(pageDirectory) = 0x28003;

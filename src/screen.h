@@ -30,4 +30,6 @@ void inicializar_en_gris();
 
 void imprimirTecla(char);
 
+void imprimirNombreGrupo();
+
 #endif  /* !__SCREEN_H__ */
