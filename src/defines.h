@@ -46,12 +46,17 @@
 /*Memory Management Unit */
 #define PDE_INDEX(virtual) virtual >> 22
 #define PTE_INDEX(virtual) (virtual << 10) >> 22
-//#define ALIGN(dir)
+#define ALIGN(dir) dir >> 12
 #define PG_WRITE 0x00000002
 #define PG_USER 0x00000004
 #define PG_PRESENT 0x00000001
 #define INICIO_PAGINAS_LIBRES	0x100000
 #define PAGE_SIZE 				0x1000
+#define X_Y_A_MEMORIA(x,y) (0x400000+(y*80+x)*0x1000)
+#define ROJO 0x841
+#define AZUL 0x325
+//#define MIN(x,y) ( x < y ? x : y )
+
 
 
 #endif  /* !__DEFINES_H__ */

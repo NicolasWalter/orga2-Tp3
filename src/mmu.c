@@ -68,27 +68,87 @@ void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3){
 	}
 }
 
-void inicializar_directorio_paginas_tarea(unsigned int virtual, unsigned char privilege, unsigned char readOrWrite) {
+// void inicializar_directorio_paginas_tarea(unsigned int virtual, unsigned char privilege, unsigned char readOrWrite) {
 	
-	unsigned int newDirectoryAddress = mmu_proxima_pagina_fisica_libre();
+// 	unsigned int newDirectoryAddress = mmu_proxima_pagina_fisica_libre();
 
-	directory_entry* pde = (directory_entry*) newDirectoryAddress;
+// 	directory_entry* pde = (directory_entry*) newDirectoryAddress;
 
-	for (i = 0; i < 1024; ++i){
-			pde[i].dirBase = 0;
-			pde[i].present = 0;
-			pde[i].rw = 0;
-			pde[i].priv = 0;	
-	}	
+// 	for (i = 0; i < 1024; ++i){
+// 			pde[i].dirBase = 0;
+// 			pde[i].present = 0;
+// 			pde[i].rw = 0;
+// 			pde[i].priv = 0;	
+// 	}	
 
-	table_entry* pte = (directory_entry*) (pde[PDE_INDEX(virtual)]dirBase)
+// 	table_entry* pte = (directory_entry*) (pde[PDE_INDEX(virtual)]dirBase)
 
-	pde[PDE_INDEX(virtual)].dirBase = tableAddress >> 12;
-	pde[PDE_INDEX(virtual)].present = 1;
-	pde[PDE_INDEX(virtual)].rw = readOrWrite;
-	pde[PDE_INDEX(virtual)].priv = privilege;	
+// 	pde[PDE_INDEX(virtual)].dirBase = tableAddress >> 12;
+// 	pde[PDE_INDEX(virtual)].present = 1;
+// 	pde[PDE_INDEX(virtual)].rw = readOrWrite;
+// 	pde[PDE_INDEX(virtual)].priv = privilege;	
+
+// }
+unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y, unsigned char privilege /*batata*/, unsigned char readOrWrite /*batata*/, unsigned int tipo ) {
+	
+	unsigned int cr3 = mmu_proxima_pagina_fisica_libre();
+	directory_entry* pde = (directory_entry*) cr3;
+	table_entry* pte= (table_entry*) mmu_proxima_pagina_fisica_libre();
+
+	pde[0].dirBase = ALIGN((unsigned int) pte);
+	pde[0].present = 1;
+	pde[0].rw = readOrWrite;
+	pde[0].priv = privilege;
+
+	int i;
+	for (i = 1; i < 1024; ++i){
+		pde[i].dirBase = 0;
+		pde[i].present = 0;
+		pde[i].rw = 0;
+		pde[i].priv = 0;	
+	}
+
+	unsigned int fisica= ALIGN(X_Y_A_MEMORIA(x,y));
+	pte[0].dirBase = fisica;
+	pte[0].present = 1;
+	pte[0].rw = readOrWrite;
+	pte[0].priv = privilege;
+
+	int j;
+	for(j=1; j<1024; j++){
+		pte[i].dirBase = 0;
+		pte[i].present = 0;
+		pte[i].rw = 0;
+		pte[i].priv = 0;
+	}
+
+	//void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite);
+	mmu_mapear_pagina(0x8000000,cr3,fisica, privilege, readOrWrite);
+	
+
+	unsigned int* codigoTarea;
+	if(tipo==ROJO){
+		codigoTarea= (unsigned int*) 0x11000;
+	}else if(tipo==AZUL){
+		codigoTarea=(unsigned int*) 0x12000;
+	} else{
+		codigoTarea=(unsigned int*) 0x13000;
+	}
+
+	unsigned int* punteroAFisica = (unsigned int*) fisica;
+	int k;
+	for(k=0; k<1024; k++){
+		punteroAFisica[k]=codigoTarea[k];
+	}
+
+	mmu_unmapear_pagina(0x8000000,cr3);
+	//void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3){
+
+return cr3;
 
 }
+
+
 
 void inicializar_directorio_paginas_kernel() {
 	int i;

@@ -123,8 +123,8 @@ start:
 
     ; Cargar IDT
     lidt [IDT_DESC]
-    mov cx, 0
- 	div cx
+  ;   mov cx, 0
+ 	; div cx
 
        ; Configurar controlador de interrupciones ANTIBATATA
     call resetear_pic
