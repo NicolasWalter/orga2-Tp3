@@ -112,6 +112,10 @@ start:
     mov eax, cr0
     or eax, 0x80000000
     mov cr0, eax 
+
+    xchg bx,bx
+
+    
     
     ;Imprimir el nombre del grupo 
     imprimir_texto_mp mostrarNombreGrupo_msg, mostrarNombreGrupo_len, 0x07, 0, (80 - mostrarNombreGrupo_len)

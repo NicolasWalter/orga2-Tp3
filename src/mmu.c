@@ -120,6 +120,7 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 	}
 
 	mmu_unmapear_pagina(0x8000000,cr3);
+	tlbflush(); //batata
 
 return cr3;
 

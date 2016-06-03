@@ -106,7 +106,39 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x01,           /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
+
+    [IDLE] = (gdt_entry) {
+        (unsigned short)    0x0FFF,  //batata       /* limit[0:15]  */
+        (unsigned short)    0x0000,  //BATATA       /* base[0:15]   */
+        (unsigned char)     0x01,    //BATATA       /* base[23:16]  */
+        (unsigned char)     0x0A,           /* type         */
+        (unsigned char)     0x01,           /* s            */
+        (unsigned char)     0x00, //batata          /* dpl          */
+        (unsigned char)     0x01,           /* p            */
+        (unsigned char)     0x01,   //batata        /* limit[16:19] */
+        (unsigned char)     0x00,          /* avl          */
+        (unsigned char)     0x00,           /* l            */
+        (unsigned char)     0x01,           /* db           */
+        (unsigned char)     0x01,           /* g            */
+        (unsigned char)     0x00,           /* base[31:24]  */
+    },
     
+    [TAREA_INICIAL] = (gdt_entry) { //ES USUARIO O KERNEL?
+        (unsigned short)    0x0FFF,  //batata       /* limit[0:15]  */
+        (unsigned short)    0x0000,  //BATATA       /* base[0:15]   */
+        (unsigned char)     0x01,    //BATATA       /* base[23:16]  */
+        (unsigned char)     0x0A,           /* type         */
+        (unsigned char)     0x01,           /* s            */
+        (unsigned char)     0x00, //batata          /* dpl          */
+        (unsigned char)     0x01,           /* p            */
+        (unsigned char)     0x01,   //batata        /* limit[16:19] */
+        (unsigned char)     0x00,          /* avl          */
+        (unsigned char)     0x00,           /* l            */
+        (unsigned char)     0x01,           /* db           */
+        (unsigned char)     0x01,           /* g            */
+        (unsigned char)     0x00,           /* base[31:24]  */
+    }
+
     
     
 };
