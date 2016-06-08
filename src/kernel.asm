@@ -9,6 +9,7 @@ extern inicializar_en_gris
 extern idt_inicializar
 extern mmu_inicializar
 extern inicializar_directorio_paginas_kernel
+extern tss_inicializar
 
 
 extern resetear_pic
@@ -121,7 +122,7 @@ start:
     imprimir_texto_mp mostrarNombreGrupo_msg, mostrarNombreGrupo_len, 0x07, 0, (80 - mostrarNombreGrupo_len)
 
     ; Inicializar tss
-
+    call tss_inicializar
     ; Inicializar tss de la tarea Idle
 
     ; Inicializar el scheduler
@@ -142,11 +143,14 @@ start:
 
 
     ; Cargar tarea inicial
+    mov ax, 1001000b
+    ltr ax
 
     ; Habilitar interrupciones
     sti
 
     ; Saltar a la primera tarea: Idle
+    jmp 1010000b:0
 
     ; Ciclar infinitamente (por si algo sale mal...)
     mov eax, 0xFFFF

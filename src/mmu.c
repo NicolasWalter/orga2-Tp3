@@ -87,7 +87,7 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 		pde[i].priv = 0;	
 	}
 
-	unsigned int fisica= ALIGN(X_Y_A_MEMORIA(x,y));
+	unsigned int fisica = ALIGN(X_Y_A_MEMORIA(x,y));
 	pte[0].dirBase = fisica;
 	pte[0].present = 1;
 	pte[0].rw = readOrWrite;

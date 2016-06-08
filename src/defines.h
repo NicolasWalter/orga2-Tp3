@@ -26,7 +26,7 @@
 
 /* Indices en la gdt */
 /* -------------------------------------------------------------------------- */
-#define GDT_COUNT 9
+#define GDT_COUNT 100
 
 #define GDT_IDX_NULL_DESC           0
 
@@ -35,6 +35,8 @@
 #define DATOS_KERNEL_0  6
 #define DATOS_USER_3 7
 #define VIDEO 		8
+#define IDLE 9
+#define TAREA_INICIAL 10
 /* Offsets en la gdt */
 /* -------------------------------------------------------------------------- */
 #define GDT_OFF_NULL_DESC           (GDT_IDX_NULL_DESC      << 3)
