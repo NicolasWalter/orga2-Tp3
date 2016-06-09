@@ -12,7 +12,7 @@
 #include "i386.h"
 #include "gdt.h"
 #include "sched.h"
-
+#include "mmu.h"
 typedef struct str_tss {
     unsigned short  ptl;
     unsigned short  unused0;

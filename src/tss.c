@@ -48,6 +48,7 @@ unsigned int gdt_indiceProximoSegmentoLibre(){
 			return i;
 		}
 	}
+	return 0;
 }
 
 
@@ -77,7 +78,7 @@ void tss_completar(unsigned int x, unsigned int y, unsigned char privilege, unsi
 	tss_aCompletar->eflags = 0x202;//0x202
 
 
-	[slotLibreGdt] = (gdt_entry) { //BATATA ATOMICA, VER CON QUE RELLENAR TODO ESTO
+	gdt[slotLibreGdt] = (gdt_entry) { //BATATA ATOMICA, VER CON QUE RELLENAR TODO ESTO
         (unsigned short)    sizeof(tss)-1, //batata       /* limit[0:15]  */
         (unsigned short)    0x0000, //BATATA       /* base[0:15]   */
         (unsigned char)     0x01,   //BATATA       /* base[23:16]  */
@@ -91,7 +92,7 @@ void tss_completar(unsigned int x, unsigned int y, unsigned char privilege, unsi
         (unsigned char)     0x01,   /* db           */
         (unsigned char)     0x01,   /* g            */
         (unsigned char)     0x00,   /* base[31:24]  */
-    },
+    };
 
     gdt[slotLibreGdt].base_0_15 = (unsigned int)&tss_aCompletar & 0x0000FFFF;
 	gdt[slotLibreGdt].base_23_16 = ((unsigned int)&tss_aCompletar & 0x00FF0000) >> 16;
