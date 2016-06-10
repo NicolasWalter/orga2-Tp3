@@ -6,6 +6,7 @@
 */
 
 #include "mmu.h"
+#include "i386.h"
 
 unsigned int proxima_pagina_libre;
 
@@ -26,12 +27,15 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 	if(!pde[PDE_INDEX(virtual)].present){
 		unsigned int tableAddress = mmu_proxima_pagina_fisica_libre();
 		int i;
+
+		table_entry* pte = (table_entry*) tableAddress; //BATATA SUPREMA: ACA LA CAGAMOS PORQUE CADA VEZ QUE LLAMAMOS A LA FUNCION CON EL CR3 DE KERNEL EXPLOTA TOOOOOODO
 		for (i = 0; i < 1024; ++i){
-			pde[i].dirBase = 0;
+			pte.dirBase = 0;
 			pde[i].present = 0;
 			pde[i].rw = 0;
 			pde[i].priv = 0;	
 		}
+
 		pde[PDE_INDEX(virtual)].dirBase = tableAddress >> 12;
 		pde[PDE_INDEX(virtual)].present = 1;
 		pde[PDE_INDEX(virtual)].rw = readOrWrite;
@@ -39,8 +43,9 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 	}
 
 	table_entry* pte = (table_entry*) (pde[PDE_INDEX(virtual)].dirBase << 12); //batata
-
+	breakpoint();
 	if(!pte[PTE_INDEX(virtual)].present){
+		breakpoint();
 		int j;
 		for (j = 0; j < 1024; ++j){
 			pte[j].dirBase = 0;
@@ -53,6 +58,7 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 		pte[PTE_INDEX(virtual)].rw = readOrWrite;
 		pte[PTE_INDEX(virtual)].priv = privilege;	
 	}
+
 }
 
 void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3){
@@ -87,8 +93,8 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 		pde[i].priv = 0;	
 	}
 
-	unsigned int fisica = ALIGN(X_Y_A_MEMORIA(x,y));
-	pte[0].dirBase = fisica;
+	unsigned int fisica = X_Y_A_MEMORIA(x,y);
+	pte[0].dirBase = ALIGN(fisica);
 	pte[0].present = 1;
 	pte[0].rw = readOrWrite;
 	pte[0].priv = privilege;
@@ -102,8 +108,11 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 	}
 
 	mmu_mapear_pagina(0x8000000,cr3,fisica, privilege, readOrWrite);
-	
+	breakpoint();
 
+	mmu_mapear_pagina(0x8000000, rcr3(),fisica,privilege,readOrWrite);
+	//void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite){
+	breakpoint();
 	unsigned int* codigoTarea;
 	if(tipo==ROJO){
 		codigoTarea= (unsigned int*) 0x11000;
@@ -115,11 +124,10 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 
 	unsigned int* punteroAFisica = (unsigned int*) fisica;
 	int k;
-	for(k=0; k<1024; k++){
+	for(k=0; k<1; k++){
 		punteroAFisica[k]=codigoTarea[k];
 	}
-
-	mmu_unmapear_pagina(0x8000000,cr3);
+	mmu_unmapear_pagina(0x8000000,rcr3());
 	tlbflush(); //batata
 
 return cr3;

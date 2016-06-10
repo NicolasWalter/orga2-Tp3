@@ -14,5 +14,6 @@
 
 unsigned short sched_proximo_indice();
 
+void sched_inicializar();
 
 #endif	/* !__SCHED_H__ */

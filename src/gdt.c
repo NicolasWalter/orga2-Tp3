@@ -10,6 +10,7 @@
 gdt_entry gdt[GDT_COUNT] = {
     /* Descriptor nulo*/
     /* Offset = 0x00 */
+    //INDICE CERO
     [GDT_IDX_NULL_DESC] = (gdt_entry) {
         (unsigned short)    0x0000,         /* limit[0:15]  */
         (unsigned short)    0x0000,         /* base[0:15]   */
@@ -25,7 +26,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x00,        //batata   /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
-
+    //INDICE CUATRO
     [CODIGO_KERNEL_0] = (gdt_entry) {
         (unsigned short)    0x6DFF,         /* limit[0:15]  */
         (unsigned short)    0x0000,         /* base[0:15]   */
@@ -41,7 +42,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x01,           /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
-
+    //INDICE CINCO
     [CODIGO_USER_3] = (gdt_entry) {
         (unsigned short)    0x6DFF,         /* limit[0:15]  */
         (unsigned short)    0x0000,         /* base[0:15]   */
@@ -58,7 +59,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x00,           /* base[31:24]  */
     },
 
-    
+        //INDICE SEIS
     [DATOS_KERNEL_0] = (gdt_entry) {
         (unsigned short)    0x6DFF,         /* limit[0:15]  */
         (unsigned short)    0x0000,         /* base[0:15]   */
@@ -74,7 +75,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x01,           /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
-
+    //INDICE SIETE
     [DATOS_USER_3] = (gdt_entry) {
         (unsigned short)    0x6DFF,         /* limit[0:15]  */
         (unsigned short)    0x0000,         /* base[0:15]   */
@@ -90,7 +91,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x01,           /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
-
+    //INDICE OCHO
     [VIDEO] = (gdt_entry) {
         (unsigned short)    0x9F3F,  //batata       /* limit[0:15]  */
         (unsigned short)    0x8000,  //BATATA       /* base[0:15]   */
@@ -106,37 +107,37 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x01,           /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
-
+    //INDICE NUEVE
     [IDLE] = (gdt_entry) {
-        (unsigned short)    103,  //batata  SIZEOF(TSS)     /* limit[0:15]  */
-        (unsigned short)    0x0000,  //BATATA       /* base[0:15]   */
-        (unsigned char)     0x01,    //BATATA       /* base[23:16]  */
-        (unsigned char)     0x09,           /* type         */
-        (unsigned char)     0x01,           /* s            */
-        (unsigned char)     0x00, //batata          /* dpl          */
-        (unsigned char)     0x01,           /* p            */
-        (unsigned char)     0x00,   //batata        /* limit[16:19] */
-        (unsigned char)     0x00,          /* avl          */
-        (unsigned char)     0x00,           /* l            */
-        (unsigned char)     0x01,           /* db           */
-        (unsigned char)     0x01,           /* g            */
-        (unsigned char)     0x00,           /* base[31:24]  */
+        (unsigned short)    0x67,     /* limit[0:15]  BATATA SIZEOFTSS*/
+        (unsigned short)    0x0000,  /* base[0:15]   BATATA*/
+        (unsigned char)     0x01,    /* base[23:16]  BATATA*/
+        (unsigned char)     0x09,    /* type         */
+        (unsigned char)     0x00,    /* s            */
+        (unsigned char)     0x00,    /* dpl          BATATA*/
+        (unsigned char)     0x01,    /* p            */
+        (unsigned char)     0x00,    /* limit[16:19]  BATATA*/
+        (unsigned char)     0x00,    /* avl          */
+        (unsigned char)     0x00,    /* l            */
+        (unsigned char)     0x01,    /* db           */
+        (unsigned char)     0x00,    /* g            */
+        (unsigned char)     0x00,    /* base[31:24]  */
     },
-    
-    [TAREA_INICIAL] = (gdt_entry) { //ES USUARIO O KERNEL?
-        (unsigned short)    103,  //batata  SIZEOF(TSS)      /* limit[0:15]  */
-        (unsigned short)    0x0000,  //BATATA       /* base[0:15]   */
-        (unsigned char)     0x01,    //BATATA       /* base[23:16]  */
-        (unsigned char)     0x09,           /* type         */
-        (unsigned char)     0x01,           /* s            */
-        (unsigned char)     0x00, //batata          /* dpl          */
-        (unsigned char)     0x01,           /* p            */
-        (unsigned char)     0x00,   //batata        /* limit[16:19] */
-        (unsigned char)     0x00,          /* avl          */
-        (unsigned char)     0x00,           /* l            */
-        (unsigned char)     0x01,           /* db           */
-        (unsigned char)     0x01,           /* g            */
-        (unsigned char)     0x00,           /* base[31:24]  */
+    //INDICE DIEZ
+    [TAREA_INICIAL] = (gdt_entry) {  
+        (unsigned short)    0x67,     /* limit[0:15]  BATATA SIZEOFTSS*/
+        (unsigned short)    0x0000,  /* base[0:15]   BATATA*/
+        (unsigned char)     0x01,    /* base[23:16]  BATATA*/
+        (unsigned char)     0x09,    /* type         */
+        (unsigned char)     0x00,    /* s            */
+        (unsigned char)     0x00,    /* dpl          BATATA*/
+        (unsigned char)     0x01,    /* p            */
+        (unsigned char)     0x00,    /* limit[16:19] BATATA*/
+        (unsigned char)     0x00,    /* avl          */
+        (unsigned char)     0x00,    /* l            */
+        (unsigned char)     0x01,    /* db           */
+        (unsigned char)     0x00,    /* g            */
+        (unsigned char)     0x00,    /* base[31:24]  */
     },
 
     

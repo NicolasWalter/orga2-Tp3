@@ -13,13 +13,14 @@ tss tss_idle;
 
 void tss_inicializar() {
 	// tarea inicial
-	gdt[TAREA_INICIAL].base_0_15 = (unsigned int )&tss_inicial & 0x0000FFFF;
-	gdt[TAREA_INICIAL].base_23_16 = ((unsigned int )&tss_inicial & 0x00FF0000) >> 16;
-	gdt[TAREA_INICIAL].base_31_24 = ((unsigned int )&tss_inicial & 0xFF000000) >> 24;
+	gdt[TAREA_INICIAL].base_0_15 = (unsigned int )&tss_inicial;// & 0x0000FFFF;
+	gdt[TAREA_INICIAL].base_23_16 = (unsigned int )&tss_inicial >> 16;//& 0x00FF0000) >> 16;
+	gdt[TAREA_INICIAL].base_31_24 = (unsigned int )&tss_inicial >> 24;//& 0xFF000000) >> 24;
+	
 	// idle
-	gdt[IDLE].base_0_15 = (unsigned int )&tss_idle & 0x0000FFFF;
-	gdt[IDLE].base_23_16 = ((unsigned int )&tss_idle & 0x00FF0000) >> 16;
-	gdt[IDLE].base_31_24 = ((unsigned int )&tss_idle & 0xFF000000) >> 24;
+	gdt[IDLE].base_0_15 = (unsigned int )&tss_idle;// & 0x0000FFFF;
+	gdt[IDLE].base_23_16 = (unsigned int )&tss_idle>>16;// & 0x00FF0000) >> 16;
+	gdt[IDLE].base_31_24 = (unsigned int )&tss_idle>>24;// & 0xFF000000) >> 24;
 	
 	tss_idle.esp = 0x27000;
 	tss_idle.ebp = 0x27000;
@@ -55,13 +56,14 @@ unsigned int gdt_indiceProximoSegmentoLibre(){
 void tss_completar(unsigned int x, unsigned int y, unsigned char privilege, unsigned char readOrWrite, unsigned int tipo){//BATATA hace falta todo esto?
 
 	unsigned int slotLibreGdt = gdt_indiceProximoSegmentoLibre();
+
 	unsigned int proxPagLibre= mmu_proxima_pagina_fisica_libre();
 	tss* tss_aCompletar = (tss*) proxPagLibre; 
 	unsigned int pilaNivel3 = (unsigned int) tss_aCompletar + PAGE_SIZE;
 	unsigned int pilaNivel0 = mmu_proxima_pagina_fisica_libre() + PAGE_SIZE;
 	unsigned int cr3Nuevo = inicializar_directorio_paginas_tarea(x, y, privilege, readOrWrite, tipo);
 
-	//LA GRAN BATATA, VER COMO RELLENARLLa 
+	// //LA GRAN BATATA, VER COMO RELLENARLLa 
 	
 	tss_aCompletar->esp = pilaNivel3;
 	tss_aCompletar->ebp = pilaNivel3;
@@ -79,18 +81,18 @@ void tss_completar(unsigned int x, unsigned int y, unsigned char privilege, unsi
 
 
 	gdt[slotLibreGdt] = (gdt_entry) { //BATATA ATOMICA, VER CON QUE RELLENAR TODO ESTO
-        (unsigned short)    sizeof(tss)-1, //batata       /* limit[0:15]  */
-        (unsigned short)    0x0000, //BATATA       /* base[0:15]   */
-        (unsigned char)     0x01,   //BATATA       /* base[23:16]  */
+        (unsigned short)    sizeof(tss)-1, /* limit[0:15]  batata*/
+        (unsigned short)    0x0000, /* base[0:15]   batata*/
+        (unsigned char)     0x01,   /* base[23:16]  batata*/
         (unsigned char)     0x09,   /* type         */
-        (unsigned char)     0x01,   /* s            */
-        (unsigned char)     0x00, 	//batata          /* dpl          */
+        (unsigned char)     0x00,   /* s            */
+        (unsigned char)     0x00, 	/* dpl          batata*/
         (unsigned char)     0x01,   /* p            */
-        (unsigned char)     0x00,   //batata        /* limit[16:19] */
+        (unsigned char)     0x00,   /* limit[16:19] batata*/
         (unsigned char)     0x00,   /* avl          */
         (unsigned char)     0x00,   /* l            */
         (unsigned char)     0x01,   /* db           */
-        (unsigned char)     0x01,   /* g            */
+        (unsigned char)     0x00,   /* g            */
         (unsigned char)     0x00,   /* base[31:24]  */
     };
 

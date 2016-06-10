@@ -10,7 +10,7 @@ extern idt_inicializar
 extern mmu_inicializar
 extern inicializar_directorio_paginas_kernel
 extern tss_inicializar
-
+extern sched_inicializar
 
 extern resetear_pic
 extern habilitar_pic
@@ -55,7 +55,6 @@ start:
     ; Imprimir mensaje de bienvenida
     imprimir_texto_mr iniciando_mr_msg, iniciando_mr_len, 0x07, 0, 0
 
-    xchg bx, bx
     ; Habilitar A20      
     call habilitar_A20
 
@@ -66,17 +65,13 @@ start:
     mov eax, CR0
     or eax, 1
     mov cr0, eax 
-    xchg bx, bx
     ; Saltar a modo protegido
     jmp 0x20:modo_protegido
     BITS 32
 
     modo_protegido: 
     mov eax, 695    
-   
-     
-
-
+    
     ; Establecer selectores de segmentos
     xor eax, eax        
     mov ax, 110000b     
@@ -114,43 +109,40 @@ start:
     or eax, 0x80000000
     mov cr0, eax 
 
-    xchg bx,bx
-
-    
-    
     ;Imprimir el nombre del grupo 
     imprimir_texto_mp mostrarNombreGrupo_msg, mostrarNombreGrupo_len, 0x07, 0, (80 - mostrarNombreGrupo_len)
 
     ; Inicializar tss
     call tss_inicializar
     ; Inicializar tss de la tarea Idle
-
+    
     ; Inicializar el scheduler
+    call sched_inicializar
+    
 
     ; Inicializar la IDT
-
-
     call idt_inicializar
-
     ; Cargar IDT
     lidt [IDT_DESC]
-  ;   mov cx, 0
+    ; mov c|, 0
  	; div cx
 
-       ; Configurar controlador de interrupciones
+    ; Configurar controlador de interrupciones
+    
     call resetear_pic
     call habilitar_pic
 
-
     ; Cargar tarea inicial
-    mov ax, 1001000b
+    mov ax, 1010000b
+     
     ltr ax
-
+     
     ; Habilitar interrupciones
-    sti
+    sti;cco
 
     ; Saltar a la primera tarea: Idle
-    jmp 1010000b:0
+     
+    jmp 1001000b:0 
 
     ; Ciclar infinitamente (por si algo sale mal...)
     mov eax, 0xFFFF
