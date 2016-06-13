@@ -14,50 +14,58 @@ void mmu_inicializar(){
 	proxima_pagina_libre = INICIO_PAGINAS_LIBRES;
 }
 
-unsigned int mmu_proxima_pagina_fisica_libre() {
+unsigned int mmu_proxima_pagina_fisica_libre() {	
 	unsigned int pagina_libre = proxima_pagina_libre;
 	proxima_pagina_libre += PAGE_SIZE;
+	unsigned int* aux = (unsigned int*) pagina_libre;
+	int i;
+	for(i=0; i<1024; i++){  //NO SABEMOS SI VA ESTE FOR
+		aux[i]=0;
+		aux++;
+	}
 	return pagina_libre;
 }
 
 void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite){
 	
 	directory_entry* pde = (directory_entry*) cr3;
+	table_entry* pte;
 
 	if(!pde[PDE_INDEX(virtual)].present){
-		unsigned int tableAddress = mmu_proxima_pagina_fisica_libre();
-		int i;
-
-		table_entry* pte = (table_entry*) tableAddress; //BATATA SUPREMA: ACA LA CAGAMOS PORQUE CADA VEZ QUE LLAMAMOS A LA FUNCION CON EL CR3 DE KERNEL EXPLOTA TOOOOOODO
-		for (i = 0; i < 1024; ++i){
-			pte.dirBase = 0;
-			pde[i].present = 0;
-			pde[i].rw = 0;
-			pde[i].priv = 0;	
-		}
-
+		unsigned int tableAddress = mmu_proxima_pagina_fisica_libre(); //Creo
 		pde[PDE_INDEX(virtual)].dirBase = tableAddress >> 12;
 		pde[PDE_INDEX(virtual)].present = 1;
 		pde[PDE_INDEX(virtual)].rw = readOrWrite;
 		pde[PDE_INDEX(virtual)].priv = privilege;
+
+		pte = (table_entry*) (pde[PDE_INDEX(virtual)].dirBase << 12); //si no esta pde tampoco esta pte
+		pte[PTE_INDEX(virtual)].dirBase = fisica >> 12;
+		pte[PTE_INDEX(virtual)].present = 1;
+		pte[PTE_INDEX(virtual)].rw = readOrWrite;
+		pte[PTE_INDEX(virtual)].priv = privilege;
+
+
+
 	}
 
-	table_entry* pte = (table_entry*) (pde[PDE_INDEX(virtual)].dirBase << 12); //batata
-	breakpoint();
+
+	pte = (table_entry*) (pde[PDE_INDEX(virtual)].dirBase << 12); //batata
+	//breakpoint();
 	if(!pte[PTE_INDEX(virtual)].present){
-		breakpoint();
-		int j;
-		for (j = 0; j < 1024; ++j){
-			pte[j].dirBase = 0;
-			pte[j].present = 0;
-			pte[j].rw = 0;         //BATATA INICIALIZAR CON CERO LOS CEROS CERO CERO
-			pte[j].priv = 0;	
-		}
-		pte[PTE_INDEX(virtual)].dirBase = fisica >> 12;
+	//	breakpoint();
+		// int j;
+		// for (j = 0; j < 1024; ++j){
+		// 	pte[j].dirBase = 0;
+		// 	pte[j].present = 0;
+		// 	pte[j].rw = 0;         //BATATA INICIALIZAR CON CERO LOS CEROS CERO CERO
+		// 	pte[j].priv = 0;	
+		// }
 		pte[PTE_INDEX(virtual)].present = 1;
 		pte[PTE_INDEX(virtual)].rw = readOrWrite;
 		pte[PTE_INDEX(virtual)].priv = privilege;	
 	}
+	pte[PTE_INDEX(virtual)].dirBase = fisica >> 12;
+
 
 }
 
@@ -85,13 +93,6 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 	pde[0].rw = readOrWrite;
 	pde[0].priv = privilege;
 
-	int i;
-	for (i = 1; i < 1024; ++i){
-		pde[i].dirBase = 0;
-		pde[i].present = 0;
-		pde[i].rw = 0;
-		pde[i].priv = 0;	
-	}
 
 	unsigned int fisica = X_Y_A_MEMORIA(x,y);
 	pte[0].dirBase = ALIGN(fisica);
@@ -99,20 +100,13 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 	pte[0].rw = readOrWrite;
 	pte[0].priv = privilege;
 
-	int j;
-	for(j=1; j<1024; j++){
-		pte[i].dirBase = 0;
-		pte[i].present = 0;
-		pte[i].rw = 0;
-		pte[i].priv = 0;
-	}
 
 	mmu_mapear_pagina(0x8000000,cr3,fisica, privilege, readOrWrite);
-	breakpoint();
+	//breakpoint();
 
-	mmu_mapear_pagina(0x8000000, rcr3(),fisica,privilege,readOrWrite);
+	mmu_mapear_pagina(fisica, rcr3(),fisica,privilege,readOrWrite);
 	//void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite){
-	breakpoint();
+	//breakpoint();
 	unsigned int* codigoTarea;
 	if(tipo==ROJO){
 		codigoTarea= (unsigned int*) 0x11000;
@@ -124,10 +118,14 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 
 	unsigned int* punteroAFisica = (unsigned int*) fisica;
 	int k;
-	for(k=0; k<1; k++){
+		//breakpoint();
+
+	for(k=0; k<1024; k++){ //BATATA MODIFICAR EL LIMITE DEL FOR
 		punteroAFisica[k]=codigoTarea[k];
 	}
-	mmu_unmapear_pagina(0x8000000,rcr3());
+	//breakpoint();
+	mmu_unmapear_pagina(fisica,rcr3());
+	//breakpoint();
 	tlbflush(); //batata
 
 return cr3;

@@ -59,7 +59,7 @@ void inicializar_en_gris(){
         for(j=0; j < 80; ++j){
             if(i < 1 || i > 44){
                 p[i][j].c = 0xFF;
-                p[i][j].a = C_BG_BLACK + C_BG_BLACK;
+                p[i][j].a = C_FG_BLACK + C_BG_BLACK;
             } else {
                 p[i][j].c = 0xB2;
                 p[i][j].a = C_FG_LIGHT_GREY + C_BG_BLACK;

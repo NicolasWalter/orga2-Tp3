@@ -17,7 +17,7 @@ void sched_inicializar(){
 	unsigned int i;
 	for (i = 0; i < 15; ++i)
 	{
-		tss_completar(i,i,1,1,0x300); //Batata ver que onda r/w
-	}
+		//tss_completar(30+i,30+i,1,1,0x300); //Batata ver que onda r/w
+	}	
 }
 
