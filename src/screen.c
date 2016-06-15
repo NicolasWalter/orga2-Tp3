@@ -96,11 +96,14 @@ void pintar_tareas(){
 }
 
 void pintar_jugadores(){
+    //print_int(sched.jugadorA->x,20,0,C_FG_WHITE);
+    //print_int(sched.jugadorA->y,15,0,C_FG_WHITE);
+   // print_int(9,sched.jugadorA.x,sched.jugadorA.y,C_FG_WHITE);
     ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
-    p[sched.jugadorA->x][sched.jugadorA->y].c = 0X11;
-    p[sched.jugadorA->x][sched.jugadorA->y].a = C_FG_WHITE + C_BG_RED;
-    p[sched.jugadorB->x][sched.jugadorB->y].c = 0X12;
-    p[sched.jugadorB->x][sched.jugadorB->y].a = C_FG_WHITE + C_BG_BLUE;
+    p[sched.jugadorA.y][sched.jugadorA.x].c = 0X11;
+    p[sched.jugadorA.y][sched.jugadorA.x].a = C_FG_WHITE + C_BG_RED;
+    p[sched.jugadorB.y][sched.jugadorB.x].c = 0X12;
+    p[sched.jugadorB.y][sched.jugadorB.x].a = C_FG_WHITE + C_BG_BLUE;
 }
 
 void imprimirTecla(char input){

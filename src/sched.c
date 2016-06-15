@@ -104,21 +104,21 @@ void sched_inicializar(){
 	jugA.id = 1;
 	jugA.tareasJugador = sched.arreglo_a;
 	jugA.puntaje = 0;
-	jugA.x=1;
-	jugA.y=0;
+	jugA.x=10;
+	jugA.y=10;
 	jugA.cantTareasDisponibles=20;
 	jugA.cantInfectados=0;
-	sched.jugadorA = &jugA;
+	sched.jugadorA = jugA;
 
 	player jugB;
 	jugB.id=2;
 	jugB.tareasJugador = sched.arreglo_b;
 	jugB.puntaje = 0;
-	jugB.x=44;
-	jugB.y=79;
+	jugB.x=79;
+	jugB.y=44;
 	jugB.cantTareasDisponibles=20;
 	jugB.cantInfectados=0;
-	sched.jugadorB = &jugB;
+	sched.jugadorB = jugB;
 
 	pintar_jugadores();
 

@@ -12,32 +12,33 @@ void game_mover_cursor(int jugador, direccion dir) {
 	// int jugAposY=sched.jugadorA->y;
 	// int jugBposX=sched.jugadorB->x;
 	// int jugBposY=sched.jugadorB->y;
-	//1=A 2=b
+
 	if(dir==IZQ){
 		if(jugador==1){
-			sched.jugadorA->y = (sched.jugadorA->y -1)%80;
+			sched.jugadorA.x = (sched.jugadorA.x -1) % 50;
 		}else{
-			sched.jugadorB->y= (sched.jugadorB->y -1)%80;
+			sched.jugadorB.x= (sched.jugadorB.x -1)% 50;
 		}
 	}else if(dir==DER){
 		if(jugador==1){
-			sched.jugadorA->y = (sched.jugadorA->y +1)%80;
+			sched.jugadorA.x = (sched.jugadorA.x +1)% 50;
 		}else{
-			sched.jugadorB->y= (sched.jugadorB->y +1)%80;
+			sched.jugadorB.x= (sched.jugadorB.x +1)% 50;
 		}
 	}else if(dir==ARB){
 		if(jugador==1){
-			sched.jugadorA->x = (sched.jugadorA->x +1);
+			sched.jugadorA.y = (sched.jugadorA.y -1);
 		}else{
-			sched.jugadorB->x= (sched.jugadorB->x +1);
+			sched.jugadorB.y= (sched.jugadorB.y -1);
 		}
 	}else{
 		if(jugador==1){
-			sched.jugadorA->x = (sched.jugadorA->x -1);
+			sched.jugadorA.y = (sched.jugadorA.y +1);
 		}else{
-			sched.jugadorB->x= (sched.jugadorB->x -1);
+			sched.jugadorB.y= (sched.jugadorB.y +1);
 		}
 	}
+	gris_de_nuevo();
 	pintar_jugadores();
 
 }

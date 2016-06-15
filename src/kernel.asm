@@ -136,7 +136,6 @@ start:
     mov ax, 1010000b
      
     ltr ax
-     
     ; Habilitar interrupciones
     sti;cco
 
@@ -148,7 +147,6 @@ start:
     mov ebx, 0xFFFF
     mov ecx, 0xFFFF
     mov edx, 0xFFFF
-    xchg bx, bx
     jmp $
     jmp $
 

@@ -46,8 +46,8 @@ typedef struct scheduler{
 	unsigned char indiceB;
 	unsigned char indiceH;
 	unsigned int cantidadVivas;
-	player* jugadorA;
-	player* jugadorB;
+	player jugadorA;
+	player jugadorB;
 } __attribute__((__packed__)) scheduler;
 
 scheduler sched;
