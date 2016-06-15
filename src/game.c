@@ -54,12 +54,32 @@ void game_mover_cursor(int jugador, direccion dir) {
 			}
 		}
 	}
-	gris_de_nuevo();
-	pintar_jugadores();
+	
+	
+
 
 }
 
 void game_lanzar(unsigned int jugador) {
+	unsigned int cr3tarea;
+	if(jugador==1){
+		if(sched.jugadorA.cantInfectados!=5){
+			tarea tipoA;
+			unsigned int ind_gdt = tss_completar(cr3tarea,sched.jugadorA.x,sched.jugadorA.y,1,1,1);
+			inicializarTarea(&tipoA,1,&cr3tarea,1,ind_gdt,sched.jugadorA.x,sched.jugadorA.y);
+			sched.arreglo_a[sched.jugadorA.cantInfectados] = tipoA;
+			sched.jugadorA.cantInfectados++;
+		}
+	}else{
+		if(sched.jugadorB.cantInfectados!=5){
+			tarea tipoB;
+			unsigned int ind_gdt = tss_completar(cr3tarea,sched.jugadorB.x,sched.jugadorB.y,1,1,2);
+			inicializarTarea(&tipoB,2,&cr3tarea,1,ind_gdt,sched.jugadorB.x,sched.jugadorB.y);
+			sched.arreglo_b[sched.jugadorB.cantInfectados] = tipoB;
+			sched.jugadorB.cantInfectados++;
+		}
+	}
+	sched.cantidadVivas++;
 }
 
 void game_soy(unsigned int yoSoy) {

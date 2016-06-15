@@ -84,11 +84,27 @@ void gris_de_nuevo(){
 
 void pintar_tareas(){
     ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
-    int i;
+    int i=0;
     while(i<15){
         if(sched.arreglo_h[i].viva){
-            p[sched.arreglo_h[i].x][sched.arreglo_h[i].y].c = 0xff;
-            p[sched.arreglo_h[i].x][sched.arreglo_h[i].y].a = C_FG_GREEN + C_BG_GREEN;
+            p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].c = 0xff;
+            p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].a = C_FG_GREEN + C_BG_GREEN;
+        }
+        i++;
+    }
+    i=0;
+     while(i<5){
+        if(sched.arreglo_a[i].viva){
+            p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].c = 0xff;
+            p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].a = C_FG_RED + C_BG_RED;
+        }
+        i++;
+    }
+     i=0;
+     while(i<5){
+        if(sched.arreglo_b[i].viva){
+            p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].c = 0xff;
+            p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].a = C_FG_BLUE + C_BG_BLUE;
         }
         i++;
     }
@@ -151,4 +167,23 @@ void imprimirMovimiento(char input){
     }else if(input==0x26){
         game_mover_cursor(2,DER);
     }
+}
+
+void imprimirLanzar(char input){
+    if(input==0x2a){
+        game_lanzar(1);
+    }else if(input==0x36){
+        game_lanzar(2);
+    }
+}
+
+
+void interrupTeclado(char input){
+    imprimirMovimiento(input);
+    imprimirLanzar(input);
+    gris_de_nuevo();
+
+    pintar_tareas();
+    
+    pintar_jugadores();
 }

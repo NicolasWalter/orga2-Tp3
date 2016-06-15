@@ -23,11 +23,13 @@ extern imprimirTecla
 extern imprimirMovimiento
 extern pintar_tareas
 extern gris_de_nuevo
+extern interrupTeclado
 ;;Game
 extern game_mapear
 extern game_soy
 extern game_lanzar
 extern game_mover_cursor
+
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -140,6 +142,7 @@ _isr32:
     call proximo_reloj
     call sched_proximo_indice
 
+    ;mov ax, 0
     cmp ax, 0
     je .noJump
         mov [sched_tarea_selector], ax
@@ -184,7 +187,7 @@ _isr33:
     push eax
     ;Imprimir en la esq sup derecha la tecla
     
-    call imprimirMovimiento
+    call interrupTeclado
     pop eax
     ; 4 restaurar registros
     popad

@@ -15,10 +15,13 @@ void inicializarTarea(tarea* t, char tipo, unsigned int* cr3, unsigned char viva
 	t->x=posX;
 	t->y=posY;
 }
+
 unsigned short sched_proximo_indice() {
 	int queArreglo = 0;
 	int i;
 	unsigned char tipoTarea = sched.actual->tipo;
+    				print_int(10,20,0,C_FG_GREEN);
+
 	if(sched.cantidadVivas>2){
 		while(queArreglo < 3){
 			if(tipoTarea == 0){//veo las A
@@ -31,10 +34,13 @@ unsigned short sched_proximo_indice() {
 					queArreglo++;
 				} else {
 					sched.indiceA = (sched.indiceA+i) % 5;
+
 					sched.actual = &sched.arreglo_a[sched.indiceA]; //batata
+
 					return sched.arreglo_a[sched.indiceA].indice_gdt;
 				}
 			} else if (tipoTarea == 1){//veo las B
+
 				i=1;
 				while(i<6 && (sched.arreglo_b[(sched.indiceB + i)%5].viva == 0)){
 					i++;
@@ -45,8 +51,11 @@ unsigned short sched_proximo_indice() {
 				} else {
 					sched.indiceB = (sched.indiceB+i) % 5;
 					sched.actual = &sched.arreglo_b[sched.indiceB];
+
 					return sched.arreglo_b[sched.indiceB].indice_gdt;
 				}
+				// tipoTarea = 2;
+				// queArreglo++;
 			} else if (tipoTarea == 2){
 				//tipo es 2, veo las sanas
 				i=1;
@@ -64,7 +73,7 @@ unsigned short sched_proximo_indice() {
 			}
 		}
 	}
-	return 0;
+	return 0;//batata
 }
 
 void sched_inicializar(){
@@ -104,8 +113,8 @@ void sched_inicializar(){
 	jugA.id = 1;
 	jugA.tareasJugador = sched.arreglo_a;
 	jugA.puntaje = 0;
-	jugA.x=10;
-	jugA.y=10;
+	jugA.x=30;
+	jugA.y=22;
 	jugA.cantTareasDisponibles=20;
 	jugA.cantInfectados=0;
 	sched.jugadorA = jugA;
@@ -114,11 +123,12 @@ void sched_inicializar(){
 	jugB.id=2;
 	jugB.tareasJugador = sched.arreglo_b;
 	jugB.puntaje = 0;
-	jugB.x=79;
-	jugB.y=44;
+	jugB.x=50;
+	jugB.y=22;
 	jugB.cantTareasDisponibles=20;
 	jugB.cantInfectados=0;
 	sched.jugadorB = jugB;
+	pintar_tareas();
 
 	pintar_jugadores();
 
