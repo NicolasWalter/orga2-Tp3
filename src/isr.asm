@@ -140,7 +140,6 @@ _isr32:
     call proximo_reloj
     call sched_proximo_indice
 
-    mov ax,0
     cmp ax, 0
     je .noJump
         mov [sched_tarea_selector], ax

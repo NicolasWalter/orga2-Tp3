@@ -150,9 +150,5 @@ void imprimirMovimiento(char input){
         game_mover_cursor(2,ABA);
     }else if(input==0x26){
         game_mover_cursor(2,DER);
-    }else if(input==0x2a){
-        //print("LShift",80,1,3);
-    }else if(input==0x36){
-        //print("RShift",80,1,3);
     }
 }
