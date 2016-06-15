@@ -68,4 +68,5 @@ void idt_inicializar() {
     IDT_ENTRY(33);
 
     IDT_ENTRY(102);
+    idt[102].attr= (unsigned short) 0xEE00; // DPL 3
 }
