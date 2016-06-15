@@ -20,12 +20,14 @@ extern sched_matar_actual
 
 ;;Screen
 extern imprimirTecla
+extern imprimirMovimiento
 extern pintar_tareas
 extern gris_de_nuevo
 ;;Game
 extern game_mapear
 extern game_soy
 extern game_lanzar
+extern game_mover_cursor
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -182,7 +184,7 @@ _isr33:
     push eax
     ;Imprimir en la esq sup derecha la tecla
     
-    call imprimirTecla
+    call imprimirMovimiento
     pop eax
     ; 4 restaurar registros
     popad

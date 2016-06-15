@@ -8,9 +8,38 @@
 
 
 void game_mover_cursor(int jugador, direccion dir) {
-	// if(dir==IZQ){
-		
-	// }
+	// int jugAposX=sched.jugadorA->x;
+	// int jugAposY=sched.jugadorA->y;
+	// int jugBposX=sched.jugadorB->x;
+	// int jugBposY=sched.jugadorB->y;
+	//1=A 2=b
+	if(dir==IZQ){
+		if(jugador==1){
+			sched.jugadorA->y = (sched.jugadorA->y -1)%80;
+		}else{
+			sched.jugadorB->y= (sched.jugadorB->y -1)%80;
+		}
+	}else if(dir==DER){
+		if(jugador==1){
+			sched.jugadorA->y = (sched.jugadorA->y +1)%80;
+		}else{
+			sched.jugadorB->y= (sched.jugadorB->y +1)%80;
+		}
+	}else if(dir==ARB){
+		if(jugador==1){
+			sched.jugadorA->x = (sched.jugadorA->x +1);
+		}else{
+			sched.jugadorB->x= (sched.jugadorB->x +1);
+		}
+	}else{
+		if(jugador==1){
+			sched.jugadorA->x = (sched.jugadorA->x -1);
+		}else{
+			sched.jugadorB->x= (sched.jugadorB->x -1);
+		}
+	}
+	pintar_jugadores();
+
 }
 
 void game_lanzar(unsigned int jugador) {

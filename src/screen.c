@@ -95,6 +95,14 @@ void pintar_tareas(){
 
 }
 
+void pintar_jugadores(){
+    ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
+    p[sched.jugadorA->x][sched.jugadorA->y].c = 0X11;
+    p[sched.jugadorA->x][sched.jugadorA->y].a = C_FG_WHITE + C_BG_RED;
+    p[sched.jugadorB->x][sched.jugadorB->y].c = 0X12;
+    p[sched.jugadorB->x][sched.jugadorB->y].a = C_FG_WHITE + C_BG_BLUE;
+}
+
 void imprimirTecla(char input){
     if(input==0x11){
         print("w",80,1,3);
@@ -116,5 +124,32 @@ void imprimirTecla(char input){
         print("LShift",80,1,3);
     }else if(input==0x36){
         print("RShift",80,1,3);
+    }
+}
+
+void imprimirMovimiento(char input){
+    if(input==0x11){
+        game_mover_cursor(1,ARB);
+    }else if(input==0x1e){
+        game_mover_cursor(1,IZQ);
+
+    }else if(input==0x1f){
+        game_mover_cursor(1,ABA);
+
+    }else if(input==0x20){
+        game_mover_cursor(1,DER);
+    }else if(input==0x17){
+
+        game_mover_cursor(2,ARB);
+    }else if(input==0x24){
+        game_mover_cursor(2,IZQ);
+    }else if(input==0x25){
+        game_mover_cursor(2,ABA);
+    }else if(input==0x26){
+        game_mover_cursor(2,DER);
+    }else if(input==0x2a){
+        //print("LShift",80,1,3);
+    }else if(input==0x36){
+        //print("RShift",80,1,3);
     }
 }

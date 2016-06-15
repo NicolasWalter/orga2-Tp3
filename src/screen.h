@@ -33,6 +33,8 @@ void gris_de_nuevo();
 
 void pintar_tareas();
 
+void pintar_jugadores();
+
 void imprimirTecla(char);
 
 void imprimirNombreGrupo();
