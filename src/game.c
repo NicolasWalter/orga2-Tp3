@@ -15,27 +15,43 @@ void game_mover_cursor(int jugador, direccion dir) {
 
 	if(dir==IZQ){
 		if(jugador==1){
-			sched.jugadorA.x = (sched.jugadorA.x -1) % 50;
+			if(sched.jugadorA.x!=0){
+				sched.jugadorA.x = (sched.jugadorA.x -1);
+			}
 		}else{
-			sched.jugadorB.x= (sched.jugadorB.x -1)% 50;
+			if(sched.jugadorB.x != 0){
+				sched.jugadorB.x= (sched.jugadorB.x -1);
+			}
 		}
 	}else if(dir==DER){
 		if(jugador==1){
-			sched.jugadorA.x = (sched.jugadorA.x +1)% 50;
+			if(sched.jugadorA.x!=79){
+				sched.jugadorA.x = (sched.jugadorA.x +1);
+			}
 		}else{
-			sched.jugadorB.x= (sched.jugadorB.x +1)% 50;
+			if(sched.jugadorB.x != 79){
+				sched.jugadorB.x= (sched.jugadorB.x +1);
+			}
 		}
 	}else if(dir==ARB){
 		if(jugador==1){
-			sched.jugadorA.y = (sched.jugadorA.y -1);
+			if(sched.jugadorA.y!=1){
+				sched.jugadorA.y = (sched.jugadorA.y -1);
+			}
 		}else{
-			sched.jugadorB.y= (sched.jugadorB.y -1);
+			if(sched.jugadorB.y != 1){
+				sched.jugadorB.y= (sched.jugadorB.y -1);
+			}
 		}
 	}else{
 		if(jugador==1){
-			sched.jugadorA.y = (sched.jugadorA.y +1);
+			if(sched.jugadorA.y!=44){
+				sched.jugadorA.y = (sched.jugadorA.y +1);
+			}
 		}else{
-			sched.jugadorB.y= (sched.jugadorB.y +1);
+			if(sched.jugadorB.y != 44){
+				sched.jugadorB.y= (sched.jugadorB.y +1);
+			}
 		}
 	}
 	gris_de_nuevo();
