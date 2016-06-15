@@ -54,10 +54,6 @@ void game_mover_cursor(int jugador, direccion dir) {
 			}
 		}
 	}
-	
-	
-
-
 }
 
 void game_lanzar(unsigned int jugador) {
@@ -80,6 +76,7 @@ void game_lanzar(unsigned int jugador) {
 		}
 	}
 	sched.cantidadVivas++;
+	//breakpoint();
 }
 
 void game_soy(unsigned int yoSoy) {

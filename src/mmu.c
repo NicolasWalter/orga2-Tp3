@@ -37,12 +37,14 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 		pde[PDE_INDEX(virtual)].present = 1;
 		pde[PDE_INDEX(virtual)].rw = readOrWrite;
 		pde[PDE_INDEX(virtual)].priv = privilege;
+		pde[PDE_INDEX(virtual)].ceros=0;
 
 		pte = (table_entry*) (pde[PDE_INDEX(virtual)].dirBase << 12); //si no esta pde tampoco esta pte
 		pte[PTE_INDEX(virtual)].dirBase = fisica >> 12;
 		pte[PTE_INDEX(virtual)].present = 1;
 		pte[PTE_INDEX(virtual)].rw = readOrWrite;
 		pte[PTE_INDEX(virtual)].priv = privilege;
+		pte[PTE_INDEX(virtual)].ceros = 0;
 
 
 
@@ -62,7 +64,9 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 		// }
 		pte[PTE_INDEX(virtual)].present = 1;
 		pte[PTE_INDEX(virtual)].rw = readOrWrite;
-		pte[PTE_INDEX(virtual)].priv = privilege;	
+		pte[PTE_INDEX(virtual)].priv = privilege;
+		pte[PTE_INDEX(virtual)].ceros = 0;
+	
 	}
 	pte[PTE_INDEX(virtual)].dirBase = fisica >> 12;
 
@@ -92,14 +96,14 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 	pde[0].present = 1;
 	pde[0].rw = readOrWrite;
 	pde[0].priv = privilege;
-
+	pde[0].ceros=0;
 
 	unsigned int fisica = X_Y_A_MEMORIA(x,y);
 	pte[0].dirBase = ALIGN(fisica);
 	pte[0].present = 1;
 	pte[0].rw = readOrWrite;
 	pte[0].priv = privilege;
-
+	pte[0].ceros=0;
 
 	mmu_mapear_pagina(0x8000000, cr3, fisica, privilege, readOrWrite);
 	//breakpoint();

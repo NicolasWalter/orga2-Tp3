@@ -71,12 +71,12 @@ unsigned int tss_completar(unsigned int cr3Tem, unsigned int x, unsigned int y, 
 	tss_aCompletar->eip = 0x8000000;
 	tss_aCompletar->esp0 = pilaNivel0;
 	tss_aCompletar->ss0 = 0x30;//horacio tiene razon batata (selector de segmento, solo offset) 
-	tss_aCompletar->ds = 0x38;//datos usuario horacio tiene razon de nuevo 
-	tss_aCompletar->ss = 0x38; //datos usuario
-	tss_aCompletar->fs = 0x38;//algun descriptor de segmento
-	tss_aCompletar->gs = 0x38;//algun descriptor de segmento
-	tss_aCompletar->es = 0x38;//algun descriptor de segmento
-	tss_aCompletar->cs = 0x28;//codigo usuario
+	tss_aCompletar->ds = 0x2B;//datos usuario horacio tiene razon de nuevo 
+	tss_aCompletar->ss = 0x2B; //datos usuario
+	tss_aCompletar->fs = 0x2B;//algun descriptor de segmento
+	tss_aCompletar->gs = 0x2B;//algun descriptor de segmento
+	tss_aCompletar->es = 0x2B;//algun descriptor de segmento
+	tss_aCompletar->cs = 0x2B;//codigo usuario
 	tss_aCompletar->eflags = 0x202;//0x202
 
 
@@ -99,5 +99,5 @@ unsigned int tss_completar(unsigned int cr3Tem, unsigned int x, unsigned int y, 
     gdt[slotLibreGdt].base_0_15 = (unsigned int)&tss_aCompletar & 0x0000FFFF;
 	gdt[slotLibreGdt].base_23_16 = ((unsigned int)&tss_aCompletar & 0x00FF0000) >> 16;
 	gdt[slotLibreGdt].base_31_24 = ((unsigned int)&tss_aCompletar) >> 24;
-	return (slotLibreGdt << 3); //BATATA
+	return (slotLibreGdt)>>8; //BATATA
 }

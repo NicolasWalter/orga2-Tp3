@@ -20,11 +20,12 @@ unsigned short sched_proximo_indice() {
 	int queArreglo = 0;
 	int i;
 	unsigned char tipoTarea = sched.actual->tipo;
-    				print_int(10,20,0,C_FG_GREEN);
+    //print_int(10,20,0,C_FG_GREEN);
 
 	if(sched.cantidadVivas>2){
 		while(queArreglo < 3){
 			if(tipoTarea == 0){//veo las A
+
 				i = 1;
 				while(i<6 && (sched.arreglo_a[(sched.indiceA + i)%5].viva == 0)){
 					i++;
@@ -32,14 +33,19 @@ unsigned short sched_proximo_indice() {
 				if(i == 6){
 					tipoTarea = 1;
 					queArreglo++;
+						print_int(10,20,0,C_FG_RED);
 				} else {
+					//UNA A VIVA
 					sched.indiceA = (sched.indiceA+i) % 5;
 
 					sched.actual = &sched.arreglo_a[sched.indiceA]; //batata
+				
+
 
 					return sched.arreglo_a[sched.indiceA].indice_gdt;
 				}
 			} else if (tipoTarea == 1){//veo las B
+    			//VEO AZULES
 
 				i=1;
 				while(i<6 && (sched.arreglo_b[(sched.indiceB + i)%5].viva == 0)){
@@ -48,6 +54,8 @@ unsigned short sched_proximo_indice() {
 				if(i == 6){
 					tipoTarea = 2;
 					queArreglo++;
+					    			print_int(10,20,0,C_FG_BLUE);
+
 				} else {
 					sched.indiceB = (sched.indiceB+i) % 5;
 					sched.actual = &sched.arreglo_b[sched.indiceB];
@@ -57,15 +65,19 @@ unsigned short sched_proximo_indice() {
 				// tipoTarea = 2;
 				// queArreglo++;
 			} else if (tipoTarea == 2){
+
 				//tipo es 2, veo las sanas
 				i=1;
-				while(i<16 && !(sched.arreglo_h[(sched.indiceH + i)%15].viva == 0)){
+				while(i<16 && (sched.arreglo_h[(sched.indiceH + i)%15].viva == 0)){
 					i++;
 				}
 				if(i == 16){
+					print_int(10,20,0,C_FG_GREEN);
 					tipoTarea = 0;
 					queArreglo++;
 				} else {
+										print_int(10,20,0,C_FG_BROWN);
+
 					sched.indiceH = (sched.indiceH+i) % 15;
 					sched.actual = &sched.arreglo_h[sched.indiceH];
 					return sched.arreglo_h[sched.indiceH].indice_gdt;
