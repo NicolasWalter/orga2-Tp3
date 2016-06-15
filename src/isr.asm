@@ -16,9 +16,16 @@ extern fin_intr_pic1
 
 ;; Sched
 extern sched_proximo_indice
+extern sched_matar_actual
 
 ;;Screen
 extern imprimirTecla
+extern pintar_tareas
+extern gris_de_nuevo
+;;Game
+extern game_mapear
+extern game_soy
+extern game_lanzar
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -28,6 +35,9 @@ global _isr%1
 _isr%1:
     mov eax, %1
     imprimir_texto_mp msgInt%1, msgIntLen%1, 0x07, 3, 0
+    call sched_matar_actual
+    mov [sched_tarea_selector], ax
+    jmp far [sched_tarea_offset]
     jmp $
 %endmacro
 
@@ -126,10 +136,21 @@ _isr32:
 
     pushad
     call proximo_reloj
-    ; asi de choto o verso naco/fran ?? BATATA
+    call sched_proximo_indice
+
+    cmp ax, 0
+    je .noJump
+        mov [sched_tarea_selector], ax
+        call fin_intr_pic1
+        jmp far [sched_tarea_offset]
+        jmp .end
+
+    .noJump:
     call fin_intr_pic1
+
+    .end:
     popad
-    iret
+iret
 
 
 
@@ -142,7 +163,7 @@ _isr32:
 ;quiero que sea la 33
 global _isr33
 _isr33:
-  
+    
 
     ;1 preservar los registros
     pushad
@@ -169,22 +190,43 @@ _isr33:
 
 ;;
 ;; Rutinas de atención de las SYSCALLS
-;; -------------------------------------------------------------------------- ;;
-
-global _isr102
-_isr102:
-
-    
-    call fin_intr_pic1
-    mov eax,0x42
-    iret
-
-
-
+;; --------------------------------------------------------------------------       ;           ;           ;          ;
 
 %define DONDE  0x124
 %define SOY    0xA6A
 %define MAPEAR 0xFF3
+global _isr102
+_isr102:
+
+    pushad
+    call fin_intr_pic1
+    cmp eax, DONDE
+    je .llamarDonde
+    cmp eax, SOY
+    je .llamarSoy
+    cmp eax,MAPEAR
+    je .llamarMapear
+    jmp .fin
+
+
+    .llamarDonde:
+        call game_mapear
+        jmp .llamarIdle
+    .llamarSoy:
+        call game_soy
+        jmp .llamarIdle
+    .llamarMapear:
+        call game_mapear
+
+    .llamarIdle:
+        jmp 1001000b:0
+
+    .fin:
+    popad
+    iret
+
+
+
 
 %define VIRUS_ROJO 0x841
 %define VIRUS_AZUL 0x325

@@ -53,7 +53,7 @@ unsigned int gdt_indiceProximoSegmentoLibre(){
 }
 
 
-void tss_completar(unsigned int x, unsigned int y, unsigned char privilege, unsigned char readOrWrite, unsigned int tipo){//BATATA hace falta todo esto?
+unsigned int tss_completar(unsigned int cr3Tem, unsigned int x, unsigned int y, unsigned char privilege, unsigned char readOrWrite, unsigned int tipo){//BATATA hace falta todo esto?
 
 	unsigned int slotLibreGdt = gdt_indiceProximoSegmentoLibre();
 
@@ -62,7 +62,7 @@ void tss_completar(unsigned int x, unsigned int y, unsigned char privilege, unsi
 	unsigned int pilaNivel3 = (unsigned int) tss_aCompletar + PAGE_SIZE;
 	unsigned int pilaNivel0 = mmu_proxima_pagina_fisica_libre() + PAGE_SIZE;
 	unsigned int cr3Nuevo = inicializar_directorio_paginas_tarea(x, y, privilege, readOrWrite, tipo);
-
+	cr3Tem=cr3Nuevo;
 	// //LA GRAN BATATA, VER COMO RELLENARLLa 
 	
 	tss_aCompletar->esp = pilaNivel3;
@@ -99,4 +99,5 @@ void tss_completar(unsigned int x, unsigned int y, unsigned char privilege, unsi
     gdt[slotLibreGdt].base_0_15 = (unsigned int)&tss_aCompletar & 0x0000FFFF;
 	gdt[slotLibreGdt].base_23_16 = ((unsigned int)&tss_aCompletar & 0x00FF0000) >> 16;
 	gdt[slotLibreGdt].base_31_24 = ((unsigned int)&tss_aCompletar) >> 24;
+	return (slotLibreGdt << 3); //BATATA
 }

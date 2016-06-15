@@ -22,4 +22,6 @@ void game_donde(unsigned int* pos);
 void game_mover_cursor(int jugador, direccion dir);
 
 
+
+
 #endif  /* !__GAME_H__ */

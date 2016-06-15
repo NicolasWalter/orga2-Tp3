@@ -101,10 +101,10 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 	pte[0].priv = privilege;
 
 
-	mmu_mapear_pagina(0x8000000,cr3,fisica, privilege, readOrWrite);
+	mmu_mapear_pagina(0x8000000, cr3, fisica, privilege, readOrWrite);
 	//breakpoint();
 
-	mmu_mapear_pagina(fisica, rcr3(),fisica,privilege,readOrWrite);
+	mmu_mapear_pagina(fisica, rcr3(), fisica, privilege, readOrWrite);
 	//void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite){
 	//breakpoint();
 	unsigned int* codigoTarea;

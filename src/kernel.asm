@@ -141,7 +141,6 @@ start:
     sti;cco
 
     ; Saltar a la primera tarea: Idle
-     
     jmp 1001000b:0 
 
     ; Ciclar infinitamente (por si algo sale mal...)
@@ -149,6 +148,7 @@ start:
     mov ebx, 0xFFFF
     mov ecx, 0xFFFF
     mov edx, 0xFFFF
+    xchg bx, bx
     jmp $
     jmp $
 

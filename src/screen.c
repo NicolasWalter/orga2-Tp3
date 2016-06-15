@@ -68,6 +68,33 @@ void inicializar_en_gris(){
     }
 }
 
+void gris_de_nuevo(){
+    ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
+    int i;
+    for (i = 0; i < 50; ++i){
+        int j;
+        for(j=0; j < 80; ++j){
+            if(!(i < 1 || i > 44)){
+                p[i][j].c = 0xB2;
+                p[i][j].a = C_FG_LIGHT_GREY + C_BG_BLACK;
+            }
+        }
+    }
+}
+
+void pintar_tareas(){
+    ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
+    int i;
+    while(i<15){
+        if(sched.arreglo_h[i].viva){
+            p[sched.arreglo_h[i].x][sched.arreglo_h[i].y].c = 0xff;
+            p[sched.arreglo_h[i].x][sched.arreglo_h[i].y].a = C_FG_GREEN + C_BG_GREEN;
+        }
+        i++;
+    }
+
+}
+
 void imprimirTecla(char input){
     if(input==0x11){
         print("w",80,1,3);
