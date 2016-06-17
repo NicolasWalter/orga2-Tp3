@@ -39,4 +39,6 @@ void imprimirTecla(char);
 
 void imprimirNombreGrupo();
 
+void actualizarPantalla();
+
 #endif  /* !__SCREEN_H__ */

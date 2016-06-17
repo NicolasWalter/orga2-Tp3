@@ -140,23 +140,22 @@ _isr32:
 
     pushad
     call proximo_reloj
+    call fin_intr_pic1
     call sched_proximo_indice
 
     ;mov ax, 0
     cmp ax, 0
     je .noJump
         mov [sched_tarea_selector], ax
-        call fin_intr_pic1
         jmp far [sched_tarea_offset]
         jmp .end
 
     .noJump:
-    call fin_intr_pic1
+    ;call fin_intr_pic1
 
     .end:
     popad
 iret
-
 
 
 

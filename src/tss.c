@@ -7,11 +7,12 @@
 
 #include "tss.h"
 
-
+#define USER_SEG 0x3
 tss tss_inicial;
 tss tss_idle;
 
 void tss_inicializar() {
+
 	// tarea inicial
 	gdt[TAREA_INICIAL].base_0_15 = (unsigned int )&tss_inicial;// & 0x0000FFFF;
 	gdt[TAREA_INICIAL].base_23_16 = (unsigned int )&tss_inicial >> 16;//& 0x00FF0000) >> 16;
@@ -21,11 +22,11 @@ void tss_inicializar() {
 	gdt[IDLE].base_0_15 = (unsigned int )&tss_idle;// & 0x0000FFFF;
 	gdt[IDLE].base_23_16 = (unsigned int )&tss_idle>>16;// & 0x00FF0000) >> 16;
 	gdt[IDLE].base_31_24 = (unsigned int )&tss_idle>>24;// & 0xFF000000) >> 24;
-	
+
 	tss_idle.esp = 0x27000;
 	tss_idle.ebp = 0x27000;
 	tss_idle.cr3 = 0x27000;
-	tss_idle.eip = 	0x00010000;
+	tss_idle.eip = 	0x10000;
 	tss_idle.esp0 = 0x27000;
 	tss_idle.ds = 0x30;
 	tss_idle.ss0 = 0x30;
@@ -57,47 +58,59 @@ unsigned int tss_completar(unsigned int cr3Tem, unsigned int x, unsigned int y, 
 
 	unsigned int slotLibreGdt = gdt_indiceProximoSegmentoLibre();
 
+
 	unsigned int proxPagLibre= mmu_proxima_pagina_fisica_libre();
 	tss* tss_aCompletar = (tss*) proxPagLibre; 
-	unsigned int pilaNivel3 = (unsigned int) tss_aCompletar + PAGE_SIZE;
+	unsigned int i = 0;
+    unsigned char* p = (unsigned char*) tss_aCompletar;
+    while(i < sizeof(tss)){
+        p[i] = 0;
+        i++;
+    }
 	unsigned int pilaNivel0 = mmu_proxima_pagina_fisica_libre() + PAGE_SIZE;
 	unsigned int cr3Nuevo = inicializar_directorio_paginas_tarea(x, y, privilege, readOrWrite, tipo);
 	cr3Tem=cr3Nuevo;
 	// //LA GRAN BATATA, VER COMO RELLENARLLa 
 	
-	tss_aCompletar->esp = pilaNivel3;
-	tss_aCompletar->ebp = pilaNivel3;
+	tss_aCompletar->esp = 0x8001000;
+	tss_aCompletar->ebp = 0x8001000;
 	tss_aCompletar->cr3 = cr3Nuevo;
 	tss_aCompletar->eip = 0x8000000;
 	tss_aCompletar->esp0 = pilaNivel0;
-	tss_aCompletar->ss0 = 0x30;//horacio tiene razon batata (selector de segmento, solo offset) 
-	tss_aCompletar->ds = 0x2B;//datos usuario horacio tiene razon de nuevo 
-	tss_aCompletar->ss = 0x2B; //datos usuario
-	tss_aCompletar->fs = 0x2B;//algun descriptor de segmento
-	tss_aCompletar->gs = 0x2B;//algun descriptor de segmento
-	tss_aCompletar->es = 0x2B;//algun descriptor de segmento
-	tss_aCompletar->cs = 0x2B;//codigo usuario
+	tss_aCompletar->ss0 = 48;//horacio tiene razon batata (selector de segmento, solo offset) 
+	tss_aCompletar->cs = 40 | USER_SEG;//codig o usuario
+
+	tss_aCompletar->ss = 56 | USER_SEG; //datos usuario
+	tss_aCompletar->ds = 56 | USER_SEG;//datos usuario horacio tiene razon de nuevo 
+	tss_aCompletar->gs = 56 | USER_SEG;//algun descriptor de segmento
+	tss_aCompletar->fs = 56 | USER_SEG;//algun descriptor de segmento
+	tss_aCompletar->es = 56 | USER_SEG;//algun descriptor de segmento
+
 	tss_aCompletar->eflags = 0x202;//0x202
 
 
 	gdt[slotLibreGdt] = (gdt_entry) { //BATATA ATOMICA, VER CON QUE RELLENAR TODO ESTO
-        (unsigned short)    sizeof(tss)-1, /* limit[0:15]  batata*/
-        (unsigned short)    0x0000, /* base[0:15]   batata*/
-        (unsigned char)     0x01,   /* base[23:16]  batata*/
-        (unsigned char)     0x09,   /* type         */
-        (unsigned char)     0x00,   /* s            */
-        (unsigned char)     0x00, 	/* dpl          batata*/
-        (unsigned char)     0x01,   /* p            */
-        (unsigned char)     0x00,   /* limit[16:19] batata*/
-        (unsigned char)     0x00,   /* avl          */
-        (unsigned char)     0x00,   /* l            */
-        (unsigned char)     0x01,   /* db           */
-        (unsigned char)     0x00,   /* g            */
-        (unsigned char)     0x00,   /* base[31:24]  */
+        (unsigned short)    sizeof(tss)-1,	/* limit[0:15]  */
+		(unsigned int)      0,         /* base[0:15]   */
+		(unsigned int)		0,	/* base[23:16]  */
+        (unsigned char)     0x09,           /* type         */
+        (unsigned char)     0x00,           /* s            */
+        (unsigned char)     0x00,           /* dpl          */
+        (unsigned char)     0x01,           /* p            */
+        (unsigned char)     0x00,           /* limit[16:19] */
+        (unsigned char)     0x00,           /* avl          */
+        (unsigned char)     0x00,           /* l            */
+        (unsigned char)     0x01,           /* db           */
+        (unsigned char)     0x00,           /* g            */
+		(unsigned int)    	0,  /* base[31:24]  */
     };
 
-    gdt[slotLibreGdt].base_0_15 = (unsigned int)&tss_aCompletar & 0x0000FFFF;
-	gdt[slotLibreGdt].base_23_16 = ((unsigned int)&tss_aCompletar & 0x00FF0000) >> 16;
-	gdt[slotLibreGdt].base_31_24 = ((unsigned int)&tss_aCompletar) >> 24;
-	return (slotLibreGdt)>>8; //BATATA
+
+    gdt[slotLibreGdt].base_0_15 = (unsigned int)tss_aCompletar;
+	gdt[slotLibreGdt].base_23_16 = (unsigned int)tss_aCompletar >> 16;
+	gdt[slotLibreGdt].base_31_24 = (unsigned int)tss_aCompletar >> 24;
+
+
+	return (slotLibreGdt<<3); //BATATA
+ 
 }

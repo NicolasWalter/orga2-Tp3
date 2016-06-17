@@ -98,6 +98,6 @@ void game_donde(unsigned int* pos) {
 //void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite){
 void game_mapear(int x, int y) {
 	unsigned int fisica = X_Y_A_MEMORIA(x,y);
-	mmu_mapear_pagina( 0x8001000, rcr3(), fisica ,1,1);
+	mmu_mapear_pagina( 0x8001000, *(sched.actual->cr3), fisica ,1,1);
 }
 

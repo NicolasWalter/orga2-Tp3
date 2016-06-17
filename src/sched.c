@@ -17,13 +17,15 @@ void inicializarTarea(tarea* t, char tipo, unsigned int* cr3, unsigned char viva
 }
 
 unsigned short sched_proximo_indice() {
+	//print_int(sched.arreglo_h[sched.indiceH].indice_gdt,35,16+sched.indiceH,C_FG_BROWN);
 	int queArreglo = 0;
 	int i;
 	unsigned char tipoTarea = sched.actual->tipo;
     //print_int(10,20,0,C_FG_GREEN);
+   
 
 	if(sched.cantidadVivas>2){
-		while(queArreglo < 3){
+		while(queArreglo < 3){	
 			if(tipoTarea == 0){//veo las A
 
 				i = 1;
@@ -33,15 +35,13 @@ unsigned short sched_proximo_indice() {
 				if(i == 6){
 					tipoTarea = 1;
 					queArreglo++;
-						print_int(10,20,0,C_FG_RED);
+					// 	print_int(10,20,0,C_FG_RED);
 				} else {
 					//UNA A VIVA
 					sched.indiceA = (sched.indiceA+i) % 5;
 
 					sched.actual = &sched.arreglo_a[sched.indiceA]; //batata
 				
-
-
 					return sched.arreglo_a[sched.indiceA].indice_gdt;
 				}
 			} else if (tipoTarea == 1){//veo las B
@@ -54,7 +54,7 @@ unsigned short sched_proximo_indice() {
 				if(i == 6){
 					tipoTarea = 2;
 					queArreglo++;
-					    			print_int(10,20,0,C_FG_BLUE);
+					    			// print_int(10,20,0,C_FG_BLUE);
 
 				} else {
 					sched.indiceB = (sched.indiceB+i) % 5;
@@ -62,8 +62,6 @@ unsigned short sched_proximo_indice() {
 
 					return sched.arreglo_b[sched.indiceB].indice_gdt;
 				}
-				// tipoTarea = 2;
-				// queArreglo++;
 			} else if (tipoTarea == 2){
 
 				//tipo es 2, veo las sanas
@@ -72,15 +70,18 @@ unsigned short sched_proximo_indice() {
 					i++;
 				}
 				if(i == 16){
-					print_int(10,20,0,C_FG_GREEN);
+					//print_int(10,20,0,C_FG_GREEN);
 					tipoTarea = 0;
 					queArreglo++;
 				} else {
-										print_int(10,20,0,C_FG_BROWN);
 
 					sched.indiceH = (sched.indiceH+i) % 15;
 					sched.actual = &sched.arreglo_h[sched.indiceH];
-					return sched.arreglo_h[sched.indiceH].indice_gdt;
+					//print_int(sched.arreglo_h[sched.indiceH].indice_gdt,24,24,C_FG_BLUE);
+				//	breakpoint();
+
+					return sched.arreglo_h[sched.indiceH].indice_gdt	;
+
 				}
 			}
 		}
@@ -88,7 +89,7 @@ unsigned short sched_proximo_indice() {
 	return 0;//batata
 }
 
-void sched_inicializar(){
+void sched_inicializar(){	
 	//tengo que meter las 15 H
 	//void tss_completar(unsigned int x, unsigned int y, unsigned char privilege, unsigned char readOrWrite, unsigned int tipo)
 	unsigned int i;
@@ -96,11 +97,13 @@ void sched_inicializar(){
 		tarea sana;
 		unsigned int cr3tarea;
 		unsigned int ind_gdt = tss_completar(cr3tarea, 10+i, 10+i, 1, 1, 0);
+		if(i==1){
+			//print_int(ind_gdt,60,20,C_FG_RED);
+		}
 		inicializarTarea(&sana, 0, &cr3tarea, 1, ind_gdt,10+i, 10+i);
 		sched.arreglo_h[i] = sana;
 		//tss_completar(1+i,1+i,1,1,0x300); //Batata ver que onda r/w
 	}	
-
 	for (i = 0; i < 5; ++i){
 		tarea tipoA;
 		tipoA.tipo=1;
@@ -149,5 +152,7 @@ void sched_inicializar(){
 unsigned short sched_matar_actual(){
 	sched.actual->viva=0;
 	sched.cantidadVivas--;
+	actualizarPantalla();
+
 	return sched_proximo_indice();
 }

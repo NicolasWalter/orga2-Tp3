@@ -57,6 +57,7 @@
 #define X_Y_A_MEMORIA(x,y) (0x400000+(y*80+x)*0x1000)
 #define ROJO 0x841
 #define AZUL 0x325
+  
 //#define MIN(x,y) ( x < y ? x : y )
 
 

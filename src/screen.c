@@ -181,6 +181,11 @@ void imprimirLanzar(char input){
 void interrupTeclado(char input){
     imprimirMovimiento(input);
     imprimirLanzar(input);
+
+    actualizarPantalla();
+}
+
+void actualizarPantalla(){
     gris_de_nuevo();
 
     pintar_tareas();
