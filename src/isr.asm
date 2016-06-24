@@ -28,6 +28,7 @@ extern interrupTeclado
 extern game_mapear
 extern game_soy
 extern game_lanzar
+extern game_donde
 extern game_mover_cursor
 
 ;;
@@ -201,7 +202,7 @@ _isr33:
 %define MAPEAR 0xFF3
 global _isr102
 _isr102:
-
+    ;xchg bx,bx
     pushad
     call fin_intr_pic1
     cmp eax, DONDE
@@ -210,11 +211,11 @@ _isr102:
     je .llamarSoy
     cmp eax,MAPEAR
     je .llamarMapear
-    jmp .fin
+    jmp .llamarIdle
 
 
     .llamarDonde:
-        call game_mapear
+        call game_donde
         jmp .llamarIdle
     .llamarSoy:
         call game_soy
@@ -224,10 +225,8 @@ _isr102:
 
     .llamarIdle:
         jmp 1001000b:0
-
-    .fin:
-    popad
-    iret
+        popad
+        iret
 
 
 

@@ -85,18 +85,39 @@ void gris_de_nuevo(){
 void pintar_tareas(){
     ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
     int i=0;
+    int cantA=0;
     while(i<15){
         if(sched.arreglo_h[i].viva){
             p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].c = 0xff;
             p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].a = C_FG_GREEN + C_BG_GREEN;
+            if(sched.arreglo_h[i].dejo_crias){
+                if(sched.arreglo_h[i].tipo==1){
+                    print("A", sched.arreglo_h[i].bebe_x, sched.arreglo_h[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                }else{
+                    print("B", sched.arreglo_h[i].bebe_x, sched.arreglo_h[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                }
+
+            }
         }
         i++;
     }
     i=0;
      while(i<5){
         if(sched.arreglo_a[i].viva){
+            if(sched.arreglo_a[i].dejo_crias==1){
+                cantA++;
+            }
             p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].c = 0xff;
             p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].a = C_FG_RED + C_BG_RED;
+            if(sched.arreglo_a[i].dejo_crias==1){
+            cantA++;
+                if(sched.arreglo_a[i].tipo==1){
+                    print("A", sched.arreglo_a[i].bebe_x, sched.arreglo_a[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                }else{
+                    print("B", sched.arreglo_a[i].bebe_x, sched.arreglo_a[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                }
+
+            }
         }
         i++;
     }
@@ -105,9 +126,19 @@ void pintar_tareas(){
         if(sched.arreglo_b[i].viva){
             p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].c = 0xff;
             p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].a = C_FG_BLUE + C_BG_BLUE;
+            if(sched.arreglo_b[i].dejo_crias==1){
+                cantA++;
+                if(sched.arreglo_b[i].tipo==1){
+                    print("A", sched.arreglo_b[i].bebe_x, sched.arreglo_b[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                }else{
+                    print("B", sched.arreglo_b[i].bebe_x, sched.arreglo_b[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                }
+
+            }
         }
         i++;
     }
+    print_int(cantA,30,30,C_FG_RED);
 
 }
 
@@ -191,4 +222,5 @@ void actualizarPantalla(){
     pintar_tareas();
     
     pintar_jugadores();
+
 }

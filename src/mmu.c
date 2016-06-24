@@ -105,7 +105,6 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 	pte[0].priv = privilege;
 	pte[0].ceros=0;
 
-	mmu_mapear_pagina(0x8000000, cr3, fisica, privilege, readOrWrite);
 	//breakpoint();
 
 	int i = 0;
@@ -113,14 +112,15 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 		mmu_mapear_pagina(i*PAGE_SIZE,cr3,i*PAGE_SIZE,0,readOrWrite);
 		i++;
 	}
+	mmu_mapear_pagina(0x8000000, cr3, fisica, privilege, readOrWrite);
 
 	mmu_mapear_pagina(fisica, rcr3(), fisica, 0, readOrWrite);
 	//void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite){
 	//breakpoint();
 	unsigned int* codigoTarea;
-	if(tipo==ROJO){
+	if(tipo==1){
 		codigoTarea= (unsigned int*) 0x11000;
-	}else if(tipo==AZUL){
+	}else if(tipo==2){
 		codigoTarea=(unsigned int*) 0x12000;
 	} else{
 		codigoTarea=(unsigned int*) 0x13000;

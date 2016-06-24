@@ -21,6 +21,9 @@ typedef struct tarea_t {
 	unsigned int indice_gdt;
 	unsigned int x;
 	unsigned int y;
+	unsigned int bebe_x;
+	unsigned int bebe_y;
+	unsigned char dejo_crias; //bool
 } __attribute__((__packed__)) tarea;
 
 typedef struct player{

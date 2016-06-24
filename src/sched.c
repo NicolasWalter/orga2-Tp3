@@ -14,6 +14,9 @@ void inicializarTarea(tarea* t, char tipo, unsigned int* cr3, unsigned char viva
 	t->indice_gdt = indice_gdt;
 	t->x=posX;
 	t->y=posY;
+	t->bebe_x=0;
+	t->bebe_y=0;
+	t->dejo_crias=0;; //bool
 }
 
 unsigned short sched_proximo_indice() {
@@ -35,13 +38,14 @@ unsigned short sched_proximo_indice() {
 				if(i == 6){
 					tipoTarea = 1;
 					queArreglo++;
-					// 	print_int(10,20,0,C_FG_RED);
 				} else {
 					//UNA A VIVA
 					sched.indiceA = (sched.indiceA+i) % 5;
 
 					sched.actual = &sched.arreglo_a[sched.indiceA]; //batata
 				
+							print_int(sched.arreglo_a[sched.indiceA].indice_gdt,20,0,C_FG_RED);
+							
 					return sched.arreglo_a[sched.indiceA].indice_gdt;
 				}
 			} else if (tipoTarea == 1){//veo las B
@@ -79,7 +83,7 @@ unsigned short sched_proximo_indice() {
 					sched.actual = &sched.arreglo_h[sched.indiceH];
 					//print_int(sched.arreglo_h[sched.indiceH].indice_gdt,24,24,C_FG_BLUE);
 				//	breakpoint();
-
+					
 					return sched.arreglo_h[sched.indiceH].indice_gdt	;
 
 				}
@@ -108,6 +112,9 @@ void sched_inicializar(){
 		tarea tipoA;
 		tipoA.tipo=1;
 		tipoA.viva=0;
+		tipoA.bebe_x=0;
+		tipoA.bebe_y=0;
+		tipoA.dejo_crias=0;
 		sched.arreglo_a[i] = tipoA;
 	}
 
@@ -115,6 +122,9 @@ void sched_inicializar(){
 		tarea tipoB;
 		tipoB.tipo=2;
 		tipoB.viva=0;
+		tipoB.bebe_x=0;
+		tipoB.bebe_y=0;
+		tipoB.dejo_crias=0;
 		sched.arreglo_b[i] = tipoB;
 	}
 
