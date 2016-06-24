@@ -44,9 +44,11 @@ unsigned short sched_proximo_indice() {
 
 					sched.actual = &sched.arreglo_a[sched.indiceA]; //batata
 				
-							print_int(sched.arreglo_a[sched.indiceA].indice_gdt,20,0,C_FG_RED);
-							
+					print_int(sched.arreglo_a[sched.indiceA].indice_gdt,20,0,C_FG_RED);
+					print_int(sched.actual->indice_gdt,40,0,C_FG_GREEN);
+		
 					return sched.arreglo_a[sched.indiceA].indice_gdt;
+
 				}
 			} else if (tipoTarea == 1){//veo las B
     			//VEO AZULES

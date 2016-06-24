@@ -90,6 +90,7 @@ void game_soy(unsigned int yoSoy) {
 }
 
 void game_donde(unsigned int* pos) {
+	//breakpoint();
 	pos[0]=sched.actual->x;
 	pos[1]=sched.actual->y;
 }
@@ -97,10 +98,11 @@ void game_donde(unsigned int* pos) {
 
 //void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite){
 void game_mapear(int x, int y) {
-	breakpoint();
+	//breakpoint();
 	unsigned int fisica = X_Y_A_MEMORIA(x,y);
 	mmu_mapear_pagina( 0x8001000, *(sched.actual->cr3), fisica ,1,1);
 	sched.actual->dejo_crias=1;
+	print_int(sched.actual->dejo_crias,30,0,C_FG_BROWN);
 	sched.actual->bebe_x=x;
 	sched.actual->bebe_y=y+1;
 }

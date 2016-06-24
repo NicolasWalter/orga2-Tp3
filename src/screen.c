@@ -105,6 +105,7 @@ void pintar_tareas(){
      while(i<5){
         if(sched.arreglo_a[i].viva){
             if(sched.arreglo_a[i].dejo_crias==1){
+                breakpoint();
                 cantA++;
             }
             p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].c = 0xff;

@@ -55,7 +55,7 @@ LS_INLINE unsigned int syscall_mapear(int x, int y) {
 
 LS_INLINE unsigned int syscall_donde(short int* a) {
     int ret;
-
+    //breakpoint();
     //asm(".intel_syntax noprefix");
     
     __asm __volatile(

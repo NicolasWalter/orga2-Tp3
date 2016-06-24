@@ -7,7 +7,7 @@
 %include "imprimir.mac"
 
 BITS 32
-
+aux: dd 0x00
 sched_tarea_offset:     dd 0x00
 sched_tarea_selector:   dw 0x00
 
@@ -202,9 +202,8 @@ _isr33:
 %define MAPEAR 0xFF3
 global _isr102
 _isr102:
-    ;xchg bx,bx
     pushad
-    call fin_intr_pic1
+    ;xchg bx, bx
     cmp eax, DONDE
     je .llamarDonde
     cmp eax, SOY
