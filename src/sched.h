@@ -11,13 +11,13 @@
 #include "screen.h"
 #include "tss.h"
 #include "gdt.h"
-//#include "game.h"
+#include "game.h"
 
 
 typedef struct tarea_t {
-	unsigned char tipo:2; //Si es 0, sana. Si es 1, A. Si es 2, B.
-	directory_entry* cr3;
-	unsigned char viva:1; //0 muerto, 1 vivo.
+	unsigned char tipo:2;	 //Si es 0, sana. Si es 1, A. Si es 2, B.
+	unsigned int* cr3;
+	unsigned char viva:1;	 //0 muerto, 1 vivo.
 	unsigned int indice_gdt;
 	unsigned int x;
 	unsigned int y;
@@ -62,4 +62,3 @@ void sched_inicializar();
 unsigned short sched_matar_actual();
 
 #endif	/* !__SCHED_H__ */
-
