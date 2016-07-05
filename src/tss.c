@@ -91,18 +91,18 @@ unsigned int tss_completar(unsigned int cr3Tem, unsigned int x, unsigned int y, 
 
 	gdt[slotLibreGdt] = (gdt_entry) { //BATATA ATOMICA, VER CON QUE RELLENAR TODO ESTO
         (unsigned short)    sizeof(tss)-1,	/* limit[0:15]  */
-		(unsigned int)      0,         /* base[0:15]   */
-		(unsigned int)		0,	/* base[23:16]  */
+		(unsigned int)      0,         		/* base[0:15]   */
+		(unsigned int)		0,				/* base[23:16]  */
         (unsigned char)     0x09,           /* type         */
         (unsigned char)     0x00,           /* s            */
-        (unsigned char)     0x00,           /* dpl          */
+        (unsigned char)     0x03,           /* dpl          */
         (unsigned char)     0x01,           /* p            */
         (unsigned char)     0x00,           /* limit[16:19] */
         (unsigned char)     0x00,           /* avl          */
         (unsigned char)     0x00,           /* l            */
         (unsigned char)     0x01,           /* db           */
         (unsigned char)     0x00,           /* g            */
-		(unsigned int)    	0,  /* base[31:24]  */
+		(unsigned int)    	0,  			/* base[31:24]  */
     };
 
 

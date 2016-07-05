@@ -16,7 +16,7 @@
 
 typedef struct tarea_t {
 	unsigned char tipo:2; //Si es 0, sana. Si es 1, A. Si es 2, B.
-	unsigned int* cr3;
+	directory_entry* cr3;
 	unsigned char viva:1; //0 muerto, 1 vivo.
 	unsigned int indice_gdt;
 	unsigned int x;
