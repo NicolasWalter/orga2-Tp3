@@ -57,7 +57,7 @@ void game_mover_cursor(int jugador, direccion dir) {
 }
 
 void game_lanzar(unsigned int jugador) {
-	unsigned int cr3tarea;
+	unsigned int cr3tarea=0; // lo iguale a 0 porque sino no me compilaba al no estar inicializado.
 	if(jugador==1){
 		if(sched.jugadorA.cantInfectados!=5){
 			tarea tipoA;
