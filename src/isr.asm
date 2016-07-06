@@ -24,6 +24,7 @@ extern imprimirMovimiento
 extern pintar_tareas
 extern gris_de_nuevo
 extern interrupTeclado
+extern actualizarPantalla
 ;;Game
 extern game_mapear
 extern game_soy
@@ -142,6 +143,7 @@ _isr32:
     pushad
     call proximo_reloj
     call fin_intr_pic1
+    ; call actualizarPantalla
     call sched_proximo_indice
 
     ;mov ax, 0
@@ -203,6 +205,7 @@ _isr33:
 global _isr102
 _isr102:
     pushad
+    push ebx
     ;xchg bx, bx
     cmp eax, DONDE
     je .llamarDonde
@@ -224,6 +227,7 @@ _isr102:
 
     .llamarIdle:
         jmp 1001000b:0
+        pop ebx
         popad
         iret
 

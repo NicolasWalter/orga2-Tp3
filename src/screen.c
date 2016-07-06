@@ -87,6 +87,8 @@ void pintar_tareas(){
     int i=0;
     int cantA=0;
     while(i<15){
+        print_int(sched.arreglo_h[i].viva,5+(i*2),40,C_FG_GREEN);
+
         if(sched.arreglo_h[i].viva){
             p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].c = 0xff;
             p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].a = C_FG_GREEN + C_BG_GREEN;
@@ -102,10 +104,13 @@ void pintar_tareas(){
         i++;
     }
     i=0;
-     while(i<5){
+     while(i<5){        
+        print_int(sched.arreglo_a[i].viva,33+(i*2),40,C_FG_RED);
+
         if(sched.arreglo_a[i].viva){
+
             if(sched.arreglo_a[i].dejo_crias==1){
-                breakpoint();
+                // breakpoint();
                 cantA++;
             }
             p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].c = 0xff;
@@ -124,6 +129,8 @@ void pintar_tareas(){
     }
      i=0;
      while(i<5){
+        print_int(sched.arreglo_b[i].viva,43+(i*2),40,C_FG_BLUE);
+
         if(sched.arreglo_b[i].viva){
             p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].c = 0xff;
             p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].a = C_FG_BLUE + C_BG_BLUE;
@@ -139,6 +146,7 @@ void pintar_tareas(){
         }
         i++;
     }
+    //MEGA PRINTEADAAAAAAAAAAAAAAAAAAAAAAAA
     print_int(cantA,30,30,C_FG_RED);
 
 }

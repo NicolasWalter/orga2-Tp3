@@ -20,6 +20,7 @@ void inicializarTarea(tarea* t, char tipo, unsigned int* cr3, unsigned char viva
 }
 
 unsigned short sched_proximo_indice() {
+	actualizarPantalla();
 	//print_int(sched.arreglo_h[sched.indiceH].indice_gdt,35,16+sched.indiceH,C_FG_BROWN);
 	int queArreglo = 0;
 	int i;
@@ -46,6 +47,8 @@ unsigned short sched_proximo_indice() {
 				
 					print_int(sched.arreglo_a[sched.indiceA].indice_gdt,20,0,C_FG_RED);
 					print_int(sched.actual->indice_gdt,40,0,C_FG_GREEN);
+					print_int(sched.arreglo_h[sched.indiceA].indice_gdt,34,24,C_FG_RED);
+
 		
 					return sched.arreglo_a[sched.indiceA].indice_gdt;
 
@@ -65,6 +68,7 @@ unsigned short sched_proximo_indice() {
 				} else {
 					sched.indiceB = (sched.indiceB+i) % 5;
 					sched.actual = &sched.arreglo_b[sched.indiceB];
+					print_int(sched.arreglo_h[sched.indiceB].indice_gdt,34,24,C_FG_BLUE);
 
 					return sched.arreglo_b[sched.indiceB].indice_gdt;
 				}
@@ -83,7 +87,7 @@ unsigned short sched_proximo_indice() {
 
 					sched.indiceH = (sched.indiceH+i) % 15;
 					sched.actual = &sched.arreglo_h[sched.indiceH];
-					//print_int(sched.arreglo_h[sched.indiceH].indice_gdt,24,24,C_FG_BLUE);
+					print_int(sched.arreglo_h[sched.indiceH].indice_gdt,34,24,C_FG_GREEN);
 				//	breakpoint();
 					
 					return sched.arreglo_h[sched.indiceH].indice_gdt	;

@@ -80,7 +80,7 @@ void game_lanzar(unsigned int jugador) {
 }
 
 void game_soy(unsigned int yoSoy) {
-	if(yoSoy==ROJO){
+	if(yoSoy==0x841){
 		sched.actual->tipo=1;
 	}else if(yoSoy==AZUL){
 		sched.actual->tipo=2;
@@ -99,10 +99,12 @@ void game_donde(unsigned int* pos) {
 //void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite){
 void game_mapear(int x, int y) {
 	//breakpoint();
-	unsigned int fisica = X_Y_A_MEMORIA(x,y);
-	mmu_mapear_pagina( 0x8001000, *(sched.actual->cr3), fisica ,1,1);
+	if(x >= SIZE_W || y >= SIZE_H){
+		return;
+	}
+	unsigned int fisica = X_Y_A_MEMORIA(x,y+1);
+	mmu_mapear_pagina( 0x8001000, (unsigned int)(sched.actual->cr3), fisica ,1,1);	
 	sched.actual->dejo_crias=1;
-	print_int(sched.actual->dejo_crias,30,0,C_FG_BROWN);
 	sched.actual->bebe_x=x;
 	sched.actual->bebe_y=y+1;
 }

@@ -70,7 +70,7 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 	}
 	pte[PTE_INDEX(virtual)].dirBase = fisica >> 12;
 
-
+	tlbflush();
 }
 
 void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3){
