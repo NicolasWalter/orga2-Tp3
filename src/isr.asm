@@ -223,8 +223,11 @@ _isr102:
         call game_soy
         jmp .llamarIdle
     .llamarMapear:
+    push ecx
+    push ebx
         call game_mapear
-
+    pop ebx
+    pop ecx
     .llamarIdle:
         jmp 1001000b:0
         pop ebx

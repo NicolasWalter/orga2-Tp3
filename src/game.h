@@ -17,8 +17,10 @@ void game_lanzar(unsigned int jugador);
 
 void game_soy(unsigned int soy);
 
-void game_donde(unsigned int* pos);
+void game_donde(short* pos);
 
 void game_mover_cursor(int jugador, direccion dir);
+
+void game_mapear(int x, int y);
 
 #endif  /* !__GAME_H__ */
