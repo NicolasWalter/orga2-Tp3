@@ -92,13 +92,16 @@ void pintar_tareas(){
         if(sched.arreglo_h[i].viva){
             p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].c = 0xff;
             p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].a = C_FG_GREEN + C_BG_GREEN;
-            if(sched.arreglo_h[i].dejo_crias){
-                if(sched.arreglo_h[i].tipo==1){
+            if(sched.arreglo_h[i].tipo==1){
+                print("A", sched.arreglo_h[i].x, sched.arreglo_h[i].x, C_FG_WHITE | C_BG_RED);
+                if(sched.arreglo_h[i].dejo_crias){
                     print("A", sched.arreglo_h[i].bebe_x, sched.arreglo_h[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
-                }else{
+                }
+            }else if(sched.arreglo_h[i].tipo==2){;
+                print("B", sched.arreglo_h[i].x, sched.arreglo_h[i].x, C_FG_WHITE | C_BG_BLUE);
+                if(sched.arreglo_h[i].dejo_crias){
                     print("B", sched.arreglo_h[i].bebe_x, sched.arreglo_h[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
                 }
-
             }
         }
         i++;

@@ -105,13 +105,13 @@ void game_mapear(int x, int y) {
 	//breakpoint();
 	unsigned int a = (unsigned int)(rcr3());
 	a++;
-	if(x >= SIZE_W || y >= SIZE_H){
+	if(x >= SIZE_W || y >= SIZE_H || y==0){
 		return;
 	}
-	unsigned int fisica = X_Y_A_MEMORIA(x,y+1);
+	unsigned int fisica = X_Y_A_MEMORIA(x,y);
 	mmu_mapear_pagina( 0x8001000, rcr3(), fisica ,1,1);	//(unsigned int)(sched.actual->cr3)
 	sched.actual->dejo_crias=1;
 	sched.actual->bebe_x=x;
-	sched.actual->bebe_y=y+1;
+	sched.actual->bebe_y=y;
 }
 
