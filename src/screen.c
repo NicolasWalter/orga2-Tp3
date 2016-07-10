@@ -51,36 +51,11 @@ void print_int(unsigned int n, unsigned int x, unsigned int y, unsigned short at
     p[y][x].a = attr;
 }
 
-void inicializar_en_gris(){
-    ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
-    int i;
-    for (i = 0; i < 50; ++i){
-        int j;
-        for(j=0; j < 80; ++j){
-            if(i < 1 || i > 44){
-                p[i][j].c = 0xFF;
-                p[i][j].a = C_FG_BLACK + C_BG_BLACK;
-            } else {
-                p[i][j].c = 0xB2;
-                p[i][j].a = C_FG_LIGHT_GREY + C_BG_BLACK;
-            }
-        }
-    }
-}
 
 void gris_de_nuevo(){
-    ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
-    int i;
-    for (i = 0; i < 50; ++i){
-        int j;
-        for(j=0; j < 80; ++j){
-            if(!(i < 1 || i > 44)){
-                p[i][j].c = 0xB2;
-                p[i][j].a = C_FG_LIGHT_GREY + C_BG_BLACK;
-            }
-        }
-    }
+    pintar_area(0, 1, 80, 44, C_FG_WHITE + C_BG_LIGHT_GREY);
 }
+
 
 void pintar_tareas(){
     ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
@@ -157,7 +132,7 @@ void pintar_tareas(){
 void pintar_jugadores(){
     //print_int(sched.jugadorA->x,20,0,C_FG_WHITE);
     //print_int(sched.jugadorA->y,15,0,C_FG_WHITE);
-   // print_int(9,sched.jugadorA.x,sched.jugadorA.y,C_FG_WHITE);
+    // print_int(9,sched.jugadorA.x,sched.jugadorA.y,C_FG_WHITE);
     ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
     p[sched.jugadorA.y][sched.jugadorA.x].c = 0X11;
     p[sched.jugadorA.y][sched.jugadorA.x].a = C_FG_WHITE + C_BG_RED;
@@ -212,6 +187,31 @@ void imprimirMovimiento(char input){
     }
 }
 
+void pintar_area(unsigned int x, unsigned int y, unsigned int ancho, unsigned int alto, unsigned short attr){
+    unsigned int fila;
+    unsigned int tope_y;  
+    unsigned int tope_x = x + ancho;
+
+    for(tope_y = y + alto; y < tope_y; y++){
+        fila = x;
+        for (fila = x; fila < tope_x; fila++){
+            print(" ", fila, y, attr);
+        }
+    }
+}
+
+void inicializar_pantalla(){
+    pintar_area(0, 0, 80, 1, C_FG_WHITE + C_BG_BLACK);
+    pintar_area(0, 1, 80, 44, C_FG_WHITE + C_BG_LIGHT_GREY);
+    pintar_area(0, 45, 80, 5, C_FG_WHITE + C_BG_BLACK);
+    pintar_area(52, 45, 6, 5, C_FG_WHITE + C_BG_RED);
+    pintar_area(58, 45, 6, 5, C_FG_WHITE + C_BG_BLUE);
+    
+    print("Vidas     Puntos      Vidas", 45, 46, C_FG_WHITE + C_BG_BLACK);
+    //print("Vidas", 66, 46, C_FG_WHITE + C_BG_BLACK);
+    print("A->               B->", 5, 46, C_FG_WHITE + C_BG_BLACK);
+}
+
 void imprimirLanzar(char input){
     if(input==0x2a){
         game_lanzar(1);
@@ -224,15 +224,14 @@ void imprimirLanzar(char input){
 void interrupTeclado(char input){
     imprimirMovimiento(input);
     imprimirLanzar(input);
-
     actualizarPantalla();
 }
 
 void actualizarPantalla(){
     gris_de_nuevo();
-
     pintar_tareas();
-    
     pintar_jugadores();
-
+    //pintar_clocks();
+    //pintar_vidas();
 }
+

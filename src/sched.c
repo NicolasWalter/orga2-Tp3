@@ -17,6 +17,7 @@ void inicializarTarea(tarea* t, char tipo, unsigned int* cr3, unsigned char viva
 	t->bebe_x=0;
 	t->bebe_y=0;
 	t->dejo_crias=0;; //bool
+	t->reloj='|';
 }
 
 unsigned short sched_proximo_indice() {
@@ -171,4 +172,19 @@ unsigned short sched_matar_actual(){
 	actualizarPantalla();
 
 	return sched_proximo_indice();
+}
+
+unsigned char avanzar_clock(unsigned char clock){
+	if(clock == '-'){
+		return '\\';
+	}
+	else if(clock == '\\'){
+		return '|';
+	}
+	else if(clock == '|'){
+		return '/';
+	}
+	else{
+		return '-';
+	}
 }

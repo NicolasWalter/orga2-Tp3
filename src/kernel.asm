@@ -5,7 +5,7 @@
 extern GDT_DESC
 extern IDT_DESC
 extern PAGE_DIRECTORY_BASE
-extern inicializar_en_gris
+extern inicializar_pantalla
 extern idt_inicializar
 extern mmu_inicializar
 extern inicializar_directorio_paginas_kernel
@@ -91,7 +91,9 @@ start:
     imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
 
     ; Inicializar pantalla
-    call inicializar_en_gris  ;BATATA PONIENDO COLORES
+    call inicializar_pantalla  ;BATATA PONIENDO COLORES
+    ;Imprimir el nombre del grupo 
+    imprimir_texto_mp mostrarNombreGrupo_msg, mostrarNombreGrupo_len, 0x07, 0, (80 - mostrarNombreGrupo_len)
         
     ; Inicializar el manejador de memoria ;BATATA ORDEN
     call mmu_inicializar
@@ -108,9 +110,6 @@ start:
     mov eax, cr0
     or eax, 0x80000000
     mov cr0, eax 
-
-    ;Imprimir el nombre del grupo 
-    imprimir_texto_mp mostrarNombreGrupo_msg, mostrarNombreGrupo_len, 0x07, 0, (80 - mostrarNombreGrupo_len)
 
     ; Inicializar tss
     call tss_inicializar
