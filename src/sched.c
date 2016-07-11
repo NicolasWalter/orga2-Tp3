@@ -17,7 +17,7 @@ void inicializarTarea(tarea* t, char tipo, unsigned int* cr3, unsigned char viva
 	t->bebe_x=0;
 	t->bebe_y=0;
 	t->dejo_crias=0;; //bool
-	t->reloj='|';
+	t->clock='|';
 }
 
 unsigned short sched_proximo_indice() {
@@ -50,7 +50,7 @@ unsigned short sched_proximo_indice() {
 					print_int(sched.actual->indice_gdt,40,0,C_FG_GREEN);
 					print_int(sched.arreglo_h[sched.indiceA].indice_gdt,34,24,C_FG_RED);
 
-		
+					sched.arreglo_a[sched.indiceA].clock = avanzar_clock(sched.arreglo_a[sched.indiceA].clock);
 					return sched.arreglo_a[sched.indiceA].indice_gdt;
 
 				}
@@ -70,7 +70,7 @@ unsigned short sched_proximo_indice() {
 					sched.indiceB = (sched.indiceB+i) % 5;
 					sched.actual = &sched.arreglo_b[sched.indiceB];
 					print_int(sched.arreglo_h[sched.indiceB].indice_gdt,34,24,C_FG_BLUE);
-
+					sched.arreglo_b[sched.indiceB].clock = avanzar_clock(sched.arreglo_b[sched.indiceB].clock);
 					return sched.arreglo_b[sched.indiceB].indice_gdt;
 				}
 			} else if (tipoTarea == 2){
@@ -90,7 +90,7 @@ unsigned short sched_proximo_indice() {
 					sched.actual = &sched.arreglo_h[sched.indiceH];
 					print_int(sched.arreglo_h[sched.indiceH].indice_gdt,34,24,C_FG_GREEN);
 				//	breakpoint();
-					
+					sched.arreglo_h[sched.indiceH].clock = avanzar_clock(sched.arreglo_h[sched.indiceH].clock);
 					return sched.arreglo_h[sched.indiceH].indice_gdt	;
 
 				}
@@ -144,7 +144,6 @@ void sched_inicializar(){
 	player jugA;
 	jugA.id = 1;
 	jugA.tareasJugador = sched.arreglo_a;
-	jugA.puntaje = 0;
 	jugA.x=30;
 	jugA.y=22;
 	jugA.cantTareasDisponibles=20;
@@ -154,7 +153,6 @@ void sched_inicializar(){
 	player jugB;
 	jugB.id=2;
 	jugB.tareasJugador = sched.arreglo_b;
-	jugB.puntaje = 0;
 	jugB.x=50;
 	jugB.y=22;
 	jugB.cantTareasDisponibles=20;
@@ -167,10 +165,14 @@ void sched_inicializar(){
 }
 
 unsigned short sched_matar_actual(){
+	if(sched.actual->tipo == 1){
+		sched.jugadorA.cantInfectados--;
+	} else if (sched.actual->tipo == 2){
+		sched.jugadorB.cantInfectados--;
+	}
 	sched.actual->viva=0;
 	sched.cantidadVivas--;
 	actualizarPantalla();
-
 	return sched_proximo_indice();
 }
 

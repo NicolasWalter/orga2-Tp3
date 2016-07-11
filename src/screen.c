@@ -51,6 +51,11 @@ void print_int(unsigned int n, unsigned int x, unsigned int y, unsigned short at
     p[y][x].a = attr;
 }
 
+void print_char(unsigned char c, unsigned int x, unsigned int y, unsigned short attr) {
+    ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
+        p[y][x].c = (unsigned char) c;
+        p[y][x].a = (unsigned char) attr;
+}
 
 void gris_de_nuevo(){
     pintar_area(0, 1, 80, 44, C_FG_WHITE + C_BG_LIGHT_GREY);
@@ -207,9 +212,41 @@ void inicializar_pantalla(){
     pintar_area(52, 45, 6, 5, C_FG_WHITE + C_BG_RED);
     pintar_area(58, 45, 6, 5, C_FG_WHITE + C_BG_BLUE);
     
-    print("Vidas     Puntos      Vidas", 45, 46, C_FG_WHITE + C_BG_BLACK);
+    print("Vidas     Puntos     Vidas", 45, 46, C_FG_WHITE + C_BG_BLACK);
     //print("Vidas", 66, 46, C_FG_WHITE + C_BG_BLACK);
-    print("A->               B->", 5, 46, C_FG_WHITE + C_BG_BLACK);
+    print("A->             B->", 5, 46, C_FG_WHITE + C_BG_BLACK);
+}
+
+void pintar_clocks(){
+    int i;
+    for(i = 0; i < 15; i++){
+        if(sched.arreglo_h[i].viva){
+            print_char(sched.arreglo_h[i].clock, (2*i)+5, 48, C_FG_WHITE + C_BG_BLACK );
+        } else {
+            print_char(' ', (2*i)+5, 48, C_FG_WHITE + C_BG_BLACK );
+        }
+    }
+    for(i = 0; i < 5; i++){
+        if(sched.arreglo_a[i].viva){        
+            print_char(sched.arreglo_a[i].clock, (2*i)+9, 46, C_FG_WHITE + C_BG_BLACK );   
+        } else {
+            print_char(' ', (2*i)+9, 46, C_FG_WHITE + C_BG_BLACK );
+        }
+    }
+    for(i = 0; i < 5; i++){
+        if(sched.arreglo_b[i].viva){
+            print_char(sched.arreglo_b[i].clock, (2*i)+25, 46, C_FG_WHITE + C_BG_BLACK );    
+        } else {
+            print_char(' ', (2*i)+25, 46, C_FG_WHITE + C_BG_BLACK );
+        }
+    }
+}
+
+void pintar_puntajes(){
+    print_int(sched.jugadorA.cantTareasDisponibles, 48, 48, C_FG_WHITE + C_BG_BLACK);
+    print_int(sched.jugadorA.cantInfectados, 55, 48, C_FG_WHITE + C_BG_BLACK);
+    print_int(sched.jugadorB.cantInfectados, 61, 48, C_FG_WHITE + C_BG_BLACK);
+    print_int(sched.jugadorB.cantTareasDisponibles, 69, 48, C_FG_WHITE + C_BG_BLACK);
 }
 
 void imprimirLanzar(char input){
@@ -231,7 +268,7 @@ void actualizarPantalla(){
     gris_de_nuevo();
     pintar_tareas();
     pintar_jugadores();
-    //pintar_clocks();
-    //pintar_vidas();
+    pintar_clocks();
+    pintar_puntajes();
 }
 

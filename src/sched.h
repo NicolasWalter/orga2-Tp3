@@ -24,13 +24,12 @@ typedef struct tarea_t {
 	unsigned int bebe_x;
 	unsigned int bebe_y;
 	unsigned char dejo_crias; //bool
-	unsigned char reloj;
+	unsigned char clock;
 } __attribute__((__packed__)) tarea;
 
 typedef struct player{
 	unsigned int id;
 	tarea* tareasJugador;
-	unsigned int puntaje;
 	unsigned int x;
 	unsigned int y;
 	unsigned int cantTareasDisponibles;
@@ -38,8 +37,6 @@ typedef struct player{
 } __attribute__((__packed__)) player;
 
 void inicializarTarea(tarea* t, char tipo, unsigned int* cr3, unsigned char viva, unsigned int indice_gdt, unsigned int pX, unsigned int pY);
-
-player p;
 
 typedef struct scheduler{
 	tarea arreglo_h[15];
@@ -55,6 +52,8 @@ typedef struct scheduler{
 } __attribute__((__packed__)) scheduler;
 
 scheduler sched;
+
+unsigned char avanzar_clock(unsigned char clock);
 
 unsigned short sched_proximo_indice();
 

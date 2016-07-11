@@ -27,6 +27,8 @@ void print_hex(unsigned int numero, int size, unsigned int x, unsigned int y, un
 
 void print_int(unsigned int n, unsigned int x, unsigned int y, unsigned short attr);
 
+void print_char(unsigned char c, unsigned int x, unsigned int y, unsigned short attr);
+
 void inicializar_pantalla();
 
 void gris_de_nuevo();
@@ -42,7 +44,9 @@ void imprimirNombreGrupo();
 void actualizarPantalla();
 
 void pintar_area(unsigned int x, unsigned int y, unsigned int ancho, unsigned int alto, unsigned short attr);
+
 void pintar_clocks();
-void pintar_vidas();
+
+void pintar_puntajes();
 
 #endif  /* !__SCREEN_H__ */
