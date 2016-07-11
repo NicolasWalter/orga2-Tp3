@@ -67,20 +67,20 @@ void pintar_tareas(){
     int i=0;
     int cantA=0;
     while(i<15){
-        print_int(sched.arreglo_h[i].viva,5+(i*2),40,C_FG_GREEN);
+        print_int(sched.arreglo_h[i].viva,5+(i*2),40,C_FG_WHITE + C_BG_GREEN);
 
         if(sched.arreglo_h[i].viva){
             p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].c = 0xff;
             p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].a = C_FG_GREEN + C_BG_GREEN;
             if(sched.arreglo_h[i].tipo==1){
-                print("A", sched.arreglo_h[i].x, sched.arreglo_h[i].x, C_FG_WHITE | C_BG_RED);
+                print("A", sched.arreglo_h[i].x, sched.arreglo_h[i].x, C_FG_WHITE + C_BG_RED);
                 if(sched.arreglo_h[i].dejo_crias){
-                    print("A", sched.arreglo_h[i].bebe_x, sched.arreglo_h[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                    print("A", sched.arreglo_h[i].bebe_x, sched.arreglo_h[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
                 }
-            }else if(sched.arreglo_h[i].tipo==2){;
-                print("B", sched.arreglo_h[i].x, sched.arreglo_h[i].x, C_FG_WHITE | C_BG_BLUE);
+            }else if(sched.arreglo_h[i].tipo==2){
+                print("B", sched.arreglo_h[i].x, sched.arreglo_h[i].x, C_FG_WHITE + C_BG_BLUE);
                 if(sched.arreglo_h[i].dejo_crias){
-                    print("B", sched.arreglo_h[i].bebe_x, sched.arreglo_h[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                    print("B", sched.arreglo_h[i].bebe_x, sched.arreglo_h[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
                 }
             }
         }
@@ -88,12 +88,10 @@ void pintar_tareas(){
     }
     i=0;
      while(i<5){        
-        print_int(sched.arreglo_a[i].viva,33+(i*2),40,C_FG_RED);
+        print_int(sched.arreglo_a[i].viva,33+(i*2),40,C_FG_WHITE + C_BG_RED);
 
         if(sched.arreglo_a[i].viva){
-
             if(sched.arreglo_a[i].dejo_crias==1){
-                // breakpoint();
                 cantA++;
             }
             p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].c = 0xff;
@@ -101,9 +99,9 @@ void pintar_tareas(){
             if(sched.arreglo_a[i].dejo_crias==1){
             cantA++;
                 if(sched.arreglo_a[i].tipo==1){
-                    print("A", sched.arreglo_a[i].bebe_x, sched.arreglo_a[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                    print("A", sched.arreglo_a[i].bebe_x, sched.arreglo_a[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
                 }else{
-                    print("B", sched.arreglo_a[i].bebe_x, sched.arreglo_a[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                    print("B", sched.arreglo_a[i].bebe_x, sched.arreglo_a[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
                 }
 
             }
@@ -112,7 +110,7 @@ void pintar_tareas(){
     }
      i=0;
      while(i<5){
-        print_int(sched.arreglo_b[i].viva,43+(i*2),40,C_FG_BLUE);
+        print_int(sched.arreglo_b[i].viva,43+(i*2),40,C_FG_WHITE + C_BG_BLUE);
 
         if(sched.arreglo_b[i].viva){
             p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].c = 0xff;
@@ -120,15 +118,15 @@ void pintar_tareas(){
             if(sched.arreglo_b[i].dejo_crias==1){
                 cantA++;
                 if(sched.arreglo_b[i].tipo==1){
-                    print("A", sched.arreglo_b[i].bebe_x, sched.arreglo_b[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                    print("A", sched.arreglo_b[i].bebe_x, sched.arreglo_b[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
                 }else{
-                    print("B", sched.arreglo_b[i].bebe_x, sched.arreglo_b[i].bebe_y, C_FG_WHITE | C_BG_LIGHT_GREY);
+                    print("B", sched.arreglo_b[i].bebe_x, sched.arreglo_b[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
                 }
 
             }
         }
         i++;
-    }
+    }   
     //MEGA PRINTEADAAAAAAAAAAAAAAAAAAAAAAAA
     print_int(cantA,30,30,C_FG_RED);
 

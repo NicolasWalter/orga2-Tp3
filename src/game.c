@@ -57,7 +57,7 @@ void game_mover_cursor(int jugador, direccion dir) {
 }
 
 void game_lanzar(unsigned int jugador) { 
-	unsigned int cr3tarea=0; // lo iguale a 0 porque sino no me compilaba al no estar inicializado.
+	unsigned int cr3tarea=0; // lo iguale a 0 porque sino no me compilaba por no estar inicializado.
 	if(jugador==1){
 		if(sched.jugadorA.cantInfectados!=5 && sched.jugadorA.cantTareasDisponibles >0){
 			tarea tipoA;
@@ -66,7 +66,6 @@ void game_lanzar(unsigned int jugador) {
 			sched.arreglo_a[sched.jugadorA.cantInfectados] = tipoA;
 			sched.jugadorA.cantInfectados++;
 			sched.jugadorA.cantTareasDisponibles--;
-
 		}
 	}else{
 		if(sched.jugadorB.cantInfectados!=5 && sched.jugadorB.cantTareasDisponibles >0){
