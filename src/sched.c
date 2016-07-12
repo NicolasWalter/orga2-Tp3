@@ -16,25 +16,24 @@ void inicializarTarea(tarea* t, char tipo, unsigned int* cr3, unsigned char viva
 	t->y=posY;
 	t->bebe_x=0;
 	t->bebe_y=0;
-	t->dejo_crias=0;; //bool
+	t->dejo_crias=0; //bool
+	t->tipoInicial=tipo;
 	t->clock='|';
 }
 
-unsigned short sched_proximo_indice() {
+unsigned short sched_proximo_indice(){
 	actualizarPantalla();
 	//print_int(sched.arreglo_h[sched.indiceH].indice_gdt,35,16+sched.indiceH,C_FG_BROWN);
-	int queArreglo = 0;
-	int i;
-	unsigned char tipoTarea = sched.actual->tipo;
+	unsigned int queArreglo = 0;
+	unsigned int i;
+	unsigned char tipoTarea = sched.actual->tipoInicial;
     //print_int(10,20,0,C_FG_GREEN);
-   
-
-	if(sched.cantidadVivas>2){
+    
+	if(sched.cantidadVivas > 1){
 		while(queArreglo < 3){	
-			if(tipoTarea == 0){//veo las A
-
-				i = 1;
-				while(i<6 && (sched.arreglo_a[(sched.indiceA + i)%5].viva == 0)){
+			if(tipoTarea == 0){
+    			i = 1;
+				while(i < 6 && (sched.arreglo_a[(sched.indiceA + i) % 5].viva == 0)){
 					i++;
 				}
 				if(i == 6){
@@ -108,10 +107,10 @@ void sched_inicializar(){
 		tarea sana;
 		unsigned int cr3tarea;
 		unsigned int ind_gdt = tss_completar(cr3tarea, 10+i, 10+i, 1, 1, 0);
-		if(i==1){
+		if(i == 1){
 			//print_int(ind_gdt,60,20,C_FG_RED);
 		}
-		inicializarTarea(&sana, 0, &cr3tarea, 1, ind_gdt,10+i, 10+i);
+		inicializarTarea(&sana, 0, &cr3tarea, 1, ind_gdt, 10+i, 10+i);
 		sched.arreglo_h[i] = sana;
 		//tss_completar(1+i,1+i,1,1,0x300); //Batata ver que onda r/w
 	}	
