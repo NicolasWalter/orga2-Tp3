@@ -35,7 +35,6 @@ typedef struct player{
 	unsigned int y;
 	unsigned int cantTareasDisponibles;
 	unsigned int cantInfectados;
-	unsigned int cantLanzadas;
 } __attribute__((__packed__)) player;
 
 void inicializarTarea(tarea* t, char tipo, unsigned int* cr3, unsigned char viva, unsigned int indice_gdt, unsigned int pX, unsigned int pY);

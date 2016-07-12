@@ -58,21 +58,30 @@ void game_mover_cursor(int jugador, direccion dir) {
 
 void game_lanzar(unsigned int jugador) { 
 	unsigned int cr3tarea=0; // lo iguale a 0 porque sino no me compilaba por no estar inicializado.
-	if(jugador==1){
-		if(sched.jugadorA.cantInfectados!=5 && sched.jugadorA.cantTareasDisponibles >0){
+	unsigned int indiceA = 0;
+	unsigned int indiceB = 0;
+	while(sched.arreglo_a[indiceA].viva == 1){
+		indiceA++;
+	}
+	while(sched.arreglo_b[indiceB].viva == 1){
+		indiceB++;
+	}
+
+	if(jugador == 1){
+		if((sched.jugadorA.cantInfectados < 5) && (sched.jugadorA.cantTareasDisponibles > 0)){
 			tarea tipoA;
-			unsigned int ind_gdt = tss_completar(cr3tarea,sched.jugadorA.x,sched.jugadorA.y,1,1,1);
-			inicializarTarea(&tipoA,1,&cr3tarea,1,ind_gdt,sched.jugadorA.x,sched.jugadorA.y);
-			sched.arreglo_a[sched.jugadorA.cantInfectados] = tipoA;
+			unsigned int ind_gdt = tss_completar(&cr3tarea, sched.jugadorA.x, sched.jugadorA.y, 1, 1, 1);
+			inicializarTarea(&tipoA, 1, &cr3tarea, 1, ind_gdt, sched.jugadorA.x, sched.jugadorA.y);
+			sched.arreglo_a[indiceA] = tipoA;
 			sched.jugadorA.cantInfectados++;
 			sched.jugadorA.cantTareasDisponibles--;
 		}
 	}else{
-		if(sched.jugadorB.cantInfectados!=5 && sched.jugadorB.cantTareasDisponibles >0){
+		if((sched.jugadorB.cantInfectados < 5) && (sched.jugadorB.cantTareasDisponibles > 0)){
 			tarea tipoB;
-			unsigned int ind_gdt = tss_completar(cr3tarea,sched.jugadorB.x,sched.jugadorB.y,1,1,2);
-			inicializarTarea(&tipoB,2,&cr3tarea,1,ind_gdt,sched.jugadorB.x,sched.jugadorB.y);
-			sched.arreglo_b[sched.jugadorB.cantInfectados] = tipoB;
+			unsigned int ind_gdt = tss_completar(&cr3tarea, sched.jugadorB.x, sched.jugadorB.y, 1, 1, 2);
+			inicializarTarea(&tipoB, 2, &cr3tarea, 1, ind_gdt, sched.jugadorB.x, sched.jugadorB.y);
+			sched.arreglo_b[indiceB] = tipoB;
 			sched.jugadorB.cantInfectados++;
 			sched.jugadorB.cantTareasDisponibles--;
 

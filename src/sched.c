@@ -45,13 +45,12 @@ unsigned short sched_proximo_indice(){
 
 					sched.actual = &sched.arreglo_a[sched.indiceA]; //batata
 				
-					print_int(sched.arreglo_a[sched.indiceA].indice_gdt,20,0,C_FG_RED);
+/*					print_int(sched.arreglo_a[sched.indiceA].indice_gdt,20,0,C_FG_RED);
 					print_int(sched.actual->indice_gdt,40,0,C_FG_GREEN);
 					print_int(sched.arreglo_h[sched.indiceA].indice_gdt,34,24,C_FG_RED);
-
+*/
 					sched.arreglo_a[sched.indiceA].clock = avanzar_clock(sched.arreglo_a[sched.indiceA].clock);
 					return sched.arreglo_a[sched.indiceA].indice_gdt;
-
 				}
 			} else if (tipoTarea == 1){//veo las B
     			//VEO AZULES
@@ -68,7 +67,7 @@ unsigned short sched_proximo_indice(){
 				} else {
 					sched.indiceB = (sched.indiceB+i) % 5;
 					sched.actual = &sched.arreglo_b[sched.indiceB];
-					print_int(sched.arreglo_h[sched.indiceB].indice_gdt,34,24,C_FG_BLUE);
+					//print_int(sched.arreglo_h[sched.indiceB].indice_gdt,34,24,C_FG_BLUE);
 					sched.arreglo_b[sched.indiceB].clock = avanzar_clock(sched.arreglo_b[sched.indiceB].clock);
 					return sched.arreglo_b[sched.indiceB].indice_gdt;
 				}
@@ -87,7 +86,7 @@ unsigned short sched_proximo_indice(){
 
 					sched.indiceH = (sched.indiceH+i) % 15;
 					sched.actual = &sched.arreglo_h[sched.indiceH];
-					print_int(sched.arreglo_h[sched.indiceH].indice_gdt,34,24,C_FG_GREEN);
+					//print_int(sched.arreglo_h[sched.indiceH].indice_gdt,34,24,C_FG_GREEN);
 				//	breakpoint();
 					sched.arreglo_h[sched.indiceH].clock = avanzar_clock(sched.arreglo_h[sched.indiceH].clock);
 					return sched.arreglo_h[sched.indiceH].indice_gdt	;
@@ -106,7 +105,7 @@ void sched_inicializar(){
 	for (i = 0; i < 15; ++i){
 		tarea sana;
 		unsigned int cr3tarea;
-		unsigned int ind_gdt = tss_completar(cr3tarea, 10+i, 10+i, 1, 1, 0);
+		unsigned int ind_gdt = tss_completar(&cr3tarea, 10+i, 10+i, 1, 1, 0);
 		if(i == 1){
 			//print_int(ind_gdt,60,20,C_FG_RED);
 		}
@@ -164,14 +163,15 @@ void sched_inicializar(){
 }
 
 unsigned short sched_matar_actual(){
-	if(sched.actual->tipo == 1){
+	if(sched.actual->tipoInicial == 1){
 		sched.jugadorA.cantInfectados--;
-	} else if (sched.actual->tipo == 2){
+	} 
+	if (sched.actual->tipoInicial == 2){
 		sched.jugadorB.cantInfectados--;
 	}
 	sched.actual->viva=0;
 	sched.cantidadVivas--;
-	actualizarPantalla();
+	//actualizarPantalla();
 	return sched_proximo_indice();
 }
 

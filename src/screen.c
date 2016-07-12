@@ -74,13 +74,13 @@ void pintar_tareas(){
                 p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].a = C_FG_GREEN + C_BG_GREEN;
             }
             if(sched.arreglo_h[i].tipo == 1){
-                print("A", sched.arreglo_h[i].x, sched.arreglo_h[i].x, C_FG_WHITE + C_BG_RED);
+                print("A", sched.arreglo_h[i].x, sched.arreglo_h[i].y, C_FG_WHITE + C_BG_RED);
                 if(sched.arreglo_h[i].dejo_crias){
                     print("A", sched.arreglo_h[i].bebe_x, sched.arreglo_h[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
                 }
             } 
             if(sched.arreglo_h[i].tipo == 2){
-                print("B", sched.arreglo_h[i].x, sched.arreglo_h[i].x, C_FG_WHITE + C_BG_BLUE);
+                print("B", sched.arreglo_h[i].x, sched.arreglo_h[i].y, C_FG_WHITE + C_BG_BLUE);
                 if(sched.arreglo_h[i].dejo_crias){
                     print("B", sched.arreglo_h[i].bebe_x, sched.arreglo_h[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
                 }
@@ -93,32 +93,39 @@ void pintar_tareas(){
         print_int(sched.arreglo_a[i].viva,33+(i*2),40,C_FG_WHITE + C_BG_RED);
 
         if(sched.arreglo_a[i].viva){
-            p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].c = 0xff;
-            p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].a = C_FG_RED + C_BG_RED;
-            if(sched.arreglo_a[i].dejo_crias==1){
-                if(sched.arreglo_a[i].tipo==1){
+            if(sched.arreglo_a[i].tipo==1){
+                p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].c = 0xff;
+                p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].a = C_FG_RED + C_BG_RED;
+                if(sched.arreglo_a[i].dejo_crias==1){
                     print("A", sched.arreglo_a[i].bebe_x, sched.arreglo_a[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
-                }else{
+                }
+            } else {
+                p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].c = 0xff;
+                p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].a = C_FG_BLUE + C_BG_BLUE;
+                if(sched.arreglo_a[i].dejo_crias==1){
                     print("B", sched.arreglo_a[i].bebe_x, sched.arreglo_a[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
                 }
             }
         }
         i++;
     }
-     i=0;
-     while(i<5){
+    i=0;
+    while(i<5){
         print_int(sched.arreglo_b[i].viva,43+(i*2),40,C_FG_WHITE + C_BG_BLUE);
 
         if(sched.arreglo_b[i].viva){
-            p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].c = 0xff;
-            p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].a = C_FG_BLUE + C_BG_BLUE;
-            if(sched.arreglo_b[i].dejo_crias==1){
-                if(sched.arreglo_b[i].tipo==1){
+            if(sched.arreglo_b[i].tipo==1){
+                p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].c = 0xff;
+                p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].a = C_FG_RED + C_BG_RED;
+                if(sched.arreglo_b[i].dejo_crias==1){
                     print("A", sched.arreglo_b[i].bebe_x, sched.arreglo_b[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
-                }else{
+                }
+            } else {
+                p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].c = 0xff;
+                p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].a = C_FG_BLUE + C_BG_BLUE;
+                if(sched.arreglo_b[i].dejo_crias==1){
                     print("B", sched.arreglo_b[i].bebe_x, sched.arreglo_b[i].bebe_y, C_FG_WHITE + C_BG_LIGHT_GREY);
                 }
-
             }
         }
         i++;
@@ -265,9 +272,15 @@ void pintar_puntajes(){
     }
 
     print_int(sched.jugadorA.cantTareasDisponibles, 48, 48, C_FG_WHITE + C_BG_BLACK);
+    if(sched.jugadorA.cantTareasDisponibles < 10){
+        print_char(0xff, 47, 48, C_BG_BLACK);
+    }
     print_int(cantA, 55, 48, C_FG_WHITE + C_BG_BLACK);
     print_int(cantB, 61, 48, C_FG_WHITE + C_BG_BLACK);
     print_int(sched.jugadorB.cantTareasDisponibles, 69, 48, C_FG_WHITE + C_BG_BLACK);
+    if(sched.jugadorB.cantTareasDisponibles < 10){
+        print_char(0xff, 68, 48, C_BG_BLACK);
+    }
 }
 
 void imprimirLanzar(char input){
