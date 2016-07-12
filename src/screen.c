@@ -241,9 +241,39 @@ void pintar_clocks(){
 }
 
 void pintar_puntajes(){
+    int cantA = 0;   
+    int cantB = 0;
+    int i;
+    for(i = 0; i < 15; i++){
+        if(sched.arreglo_h[i].viva == 1){
+            if(sched.arreglo_h[i].tipo == 1){
+                cantA++;
+            } else if(sched.arreglo_h[i].tipo == 2){
+                cantB++;
+            }
+        }
+    }
+    
+    for(i = 0; i < 5; i++){
+        if(sched.arreglo_a[i].viva == 1){
+            if(sched.arreglo_a[i].tipo == 1){
+                cantA++;
+            } else if(sched.arreglo_a[i].tipo == 2){
+                cantB++;
+            }
+        }
+        if(sched.arreglo_b[i].viva == 1){
+            if(sched.arreglo_b[i].tipo == 1){
+                cantA++;
+            } else if(sched.arreglo_b[i].tipo == 2){
+                cantB++;
+            }
+        }
+    }
+
     print_int(sched.jugadorA.cantTareasDisponibles, 48, 48, C_FG_WHITE + C_BG_BLACK);
-    print_int(sched.jugadorA.cantInfectados, 55, 48, C_FG_WHITE + C_BG_BLACK);
-    print_int(sched.jugadorB.cantInfectados, 61, 48, C_FG_WHITE + C_BG_BLACK);
+    print_int(cantA, 55, 48, C_FG_WHITE + C_BG_BLACK);
+    print_int(cantB, 61, 48, C_FG_WHITE + C_BG_BLACK);
     print_int(sched.jugadorB.cantTareasDisponibles, 69, 48, C_FG_WHITE + C_BG_BLACK);
 }
 
