@@ -23,4 +23,6 @@ void game_mover_cursor(int jugador, direccion dir);
 
 void game_mapear(int x, int y);
 
+void modoDebug(unsigned int cr4, unsigned int cr3, unsigned int cr2, unsigned int cr0,unsigned int gs, unsigned int fs,unsigned int es, unsigned int ds,unsigned int ebp, unsigned int edi, unsigned int esi, unsigned int edx, unsigned int ecx, unsigned int ebx, unsigned int eax, unsigned int errCode, unsigned int eip, unsigned int cs, unsigned int eflags, unsigned int esp, unsigned int ss);
+
 #endif  /* !__GAME_H__ */

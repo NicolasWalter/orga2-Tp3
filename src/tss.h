@@ -55,8 +55,7 @@ typedef struct str_tss {
 } __attribute__((__packed__, aligned (8))) tss;
 
 void tss_inicializar();
-//unsigned int tss_completar(unsigned int x, unsigned int y, unsigned char privilege, unsigned char readOrWrite, unsigned int tipo);//BATATA hace falta todo esto?
-unsigned int tss_completar(unsigned int* cr3Tem, unsigned int x, unsigned int y, unsigned char privilege, unsigned char readOrWrite, unsigned int tipo);//BATATA hace falta todo esto?
+unsigned int tss_completar(unsigned int* cr3Tem, unsigned int x, unsigned int y, unsigned char privilege, unsigned char readOrWrite, unsigned int tipo);
 
 
 #endif  /* !__TSS_H__ */

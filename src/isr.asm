@@ -31,7 +31,7 @@ extern game_soy
 extern game_lanzar
 extern game_donde
 extern game_mover_cursor
-
+extern modoDebug
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -39,11 +39,43 @@ extern game_mover_cursor
 %macro ISR 1
 global _isr%1
 _isr%1:
+    push eax
+    push ebx
+    push ecx
+    push edx
+    push esi
+    push edi
+    push ebp
+    push ds
+    push es
+    push fs
+    push gs
+
+    mov eax, cr0
+    push eax
+
+    mov eax,cr2
+    push eax
+
+    mov eax,cr3
+    push eax
+
+    mov eax,cr4
+    push eax
+
+
+    
+
+    call modoDebug
+
+
     mov eax, %1
     imprimir_texto_mp msgInt%1, msgIntLen%1, 0x07, 3, 0
     call sched_matar_actual
-    mov [sched_tarea_selector], ax
-    jmp far [sched_tarea_offset]
+    ; mov [sched_tarea_selector], ax
+    ; jmp far [sched_tarea_offset]
+    jmp 1001000b:0 
+
     jmp $
 %endmacro
 

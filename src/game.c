@@ -123,3 +123,9 @@ void game_mapear(int x, int y) {
 	sched.actual->bebe_y=y;
 }
 
+void modoDebug(unsigned int cr4, unsigned int cr3, unsigned int cr2, unsigned int cr0,unsigned int gs, unsigned int fs,unsigned int es, unsigned int ds,unsigned int ebp, unsigned int edi, unsigned int esi, unsigned int edx, unsigned int ecx, unsigned int ebx, unsigned int eax, unsigned int errCode, unsigned int eip, unsigned int cs, unsigned int eflags, unsigned int esp, unsigned int ss){
+    if (sched.modoDebugFlag) {
+        sched.saltoDebug=1;
+        pintar_Debug(cr4, cr3, cr2, cr0,gs, fs,es, ds,ebp, edi, esi, edx, ecx, ebx, eax, errCode, eip, cs, eflags, esp, ss);
+    }
+}

@@ -49,4 +49,6 @@ void pintar_clocks();
 
 void pintar_puntajes();
 
+void pintar_Debug(unsigned int cr4,unsigned int cr3,unsigned int cr2,unsigned int cr0,unsigned int gs, unsigned int fs,unsigned int es, unsigned int ds,unsigned int ebp, unsigned int edi, unsigned int esi, unsigned int edx, unsigned int ecx, unsigned int ebx, unsigned int eax, unsigned int errCode, unsigned int eip, unsigned int cs, unsigned int eflags, unsigned int esp, unsigned int ss);
+
 #endif  /* !__SCREEN_H__ */

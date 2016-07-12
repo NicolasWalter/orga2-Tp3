@@ -48,6 +48,8 @@ typedef struct scheduler{
 	unsigned char indiceB;
 	unsigned char indiceH;
 	unsigned int cantidadVivas;
+	unsigned char modoDebugFlag;
+	unsigned char saltoDebug;
 	player jugadorA;
 	player jugadorB;
 } __attribute__((__packed__)) scheduler;

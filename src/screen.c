@@ -63,11 +63,16 @@ void gris_de_nuevo(){
 
 
 void pintar_tareas(){
+    print("Modo debug: ", 0,0,C_FG_WHITE + C_BG_BLACK);
+    if(sched.modoDebugFlag){
+        print("ON ",12,0,C_FG_GREEN + C_BG_BLACK);        
+    }else{
+        print("OFF",12,0,C_FG_RED + C_BG_BLACK);        
+
+    }
     ca (*p)[VIDEO_COLS] = (ca (*)[VIDEO_COLS]) VIDEO_SCREEN;
     int i=0;
     while(i<15){
-        print_int(sched.arreglo_h[i].viva,5+(i*2),40,C_FG_WHITE + C_BG_GREEN);
-
         if(sched.arreglo_h[i].viva){
             if(sched.arreglo_h[i].tipo == 0){
                 p[sched.arreglo_h[i].y][sched.arreglo_h[i].x].c = 0xff;
@@ -90,8 +95,6 @@ void pintar_tareas(){
     }
     i=0;
     while(i<5){        
-        print_int(sched.arreglo_a[i].viva,33+(i*2),40,C_FG_WHITE + C_BG_RED);
-
         if(sched.arreglo_a[i].viva){
             if(sched.arreglo_a[i].tipo==1){
                 p[sched.arreglo_a[i].y][sched.arreglo_a[i].x].c = 0xff;
@@ -111,8 +114,6 @@ void pintar_tareas(){
     }
     i=0;
     while(i<5){
-        print_int(sched.arreglo_b[i].viva,43+(i*2),40,C_FG_WHITE + C_BG_BLUE);
-
         if(sched.arreglo_b[i].viva){
             if(sched.arreglo_b[i].tipo==1){
                 p[sched.arreglo_b[i].y][sched.arreglo_b[i].x].c = 0xff;
@@ -291,12 +292,23 @@ void imprimirLanzar(char input){
     }
 }
 
+void debugModoOnOrOff(char input){
+    if(input==0x15){
+        sched.modoDebugFlag=(sched.modoDebugFlag+1)%2;
+    }
+}
 
 void interrupTeclado(char input){
-    imprimirMovimiento(input);
-    imprimirLanzar(input);
-    actualizarPantalla();
+    if(sched.saltoDebug==0){
+        imprimirMovimiento(input);
+        imprimirLanzar(input);
+        actualizarPantalla();
+        debugModoOnOrOff(input);
+    }else if(input==0x15){
+        sched.saltoDebug=0;
+    }
 }
+
 
 void actualizarPantalla(){
     gris_de_nuevo();
@@ -306,3 +318,101 @@ void actualizarPantalla(){
     pintar_puntajes();
 }
 
+
+void pintar_Debug(unsigned int cr4,unsigned int cr3,unsigned int cr2,unsigned int cr0,unsigned int gs, unsigned int fs,unsigned int es, unsigned int ds,unsigned int ebp, unsigned int edi, unsigned int esi, unsigned int edx, unsigned int ecx, unsigned int ebx, unsigned int eax, unsigned int errCode, unsigned int eip, unsigned int cs, unsigned int eflags, unsigned int esp, unsigned int ss){
+    pintar_area(24, 6, 32, 37, C_FG_BLACK + C_BG_BLACK);
+    pintar_area(25, 7, 30, 35, C_FG_WHITE + C_BG_LIGHT_GREY);
+    int columna;
+   
+    for(columna=25;columna<55;columna++){
+        if(sched.actual->tipo==1){
+            print("virus A",25,7,C_FG_BLACK+C_BG_RED);
+            print(" ", columna, 7, C_FG_RED + C_BG_RED);
+        }else if(sched.actual->tipo==2){
+            print(" ", columna, 7, C_FG_BLUE + C_BG_BLUE);
+            print("virus B",25,7,C_FG_BLACK+C_BG_BLUE);
+
+        }
+        print("eax",26,9,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(eax,8,30,9,C_FG_WHITE+C_BG_LIGHT_GREY);
+        print("cr0",42,9,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(cr0,8,46,9,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+
+        print("ebx",26,11,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(ebx,8,30,11,C_FG_WHITE+C_BG_LIGHT_GREY);
+        print("cr2",42,11,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(cr2,8,46,11,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+
+        print("ecx",26,13,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(ecx,8,30,13,C_FG_WHITE+C_BG_LIGHT_GREY);
+        print("cr3",42,13,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(cr3,8,46,13,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+
+        print("edx",26,15,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(edx,8,30,15,C_FG_WHITE+C_BG_LIGHT_GREY);
+        print("cr3",42,15,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(cr3,8,46,15,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+
+        print("esi",26,17,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(esi,8,30,17,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+
+        print("edi",26,19,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(edi,8,30,19,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+        print("ebp",26,21,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(ebp,8,30,21,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+        print("esp",26,23,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(esp,8,30,23,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+
+        print("eip",26,25,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(eip,8,30,25,C_FG_WHITE+C_BG_LIGHT_GREY);
+        print("stack",42,25,C_FG_BLACK+C_BG_LIGHT_GREY);
+
+
+
+        print(" cs",26,27,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(cs,4,30,27,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+
+        print(" ds",26,29,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(ds,4,30,29,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+        unsigned int * espPuntero = (unsigned int*) esp;
+        print_hex(*(espPuntero), 8, 42, 29,C_FG_WHITE+C_BG_LIGHT_GREY);
+        espPuntero ++;
+        print_hex(*(espPuntero), 8, 42, 30,C_FG_WHITE+C_BG_LIGHT_GREY);
+        espPuntero ++;
+        print_hex(*(espPuntero), 8, 42, 31,C_FG_WHITE+C_BG_LIGHT_GREY);
+        espPuntero ++;
+        print_hex(*(espPuntero), 8, 42, 32,C_FG_WHITE+C_BG_LIGHT_GREY);
+        espPuntero ++;
+        print_hex(*(espPuntero), 8, 42, 33,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+        print(" es",26,31,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(es,4,30,31,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+
+        print(" fs",26,33,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(fs,4,30,33,C_FG_WHITE+C_BG_LIGHT_GREY);
+ 
+
+        print(" gs",26,35,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(gs,4,30,35,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+
+        print(" ss",26,37,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(ss,4,30,37,C_FG_WHITE+C_BG_LIGHT_GREY);
+
+
+        print(" eflags",26,39,C_FG_BLACK+C_BG_LIGHT_GREY);
+        print_hex(eflags,8,34,39,C_FG_WHITE+C_BG_LIGHT_GREY);
+    }
+
+}

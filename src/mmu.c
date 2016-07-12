@@ -51,22 +51,12 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 	}
 
 
-	pte = (table_entry*) (pde[PDE_INDEX(virtual)].dirBase << 12); //batata
-	//breakpoint();
+	pte = (table_entry*) (pde[PDE_INDEX(virtual)].dirBase << 12); 
 	if(!pte[PTE_INDEX(virtual)].present){
-	//	breakpoint();
-		// int j;
-		// for (j = 0; j < 1024; ++j){
-		// 	pte[j].dirBase = 0;
-		// 	pte[j].present = 0;	
-		// 	pte[j].rw = 0;         //BATATA INICIALIZAR CON CERO LOS CEROS CERO CERO
-		// 	pte[j].priv = 0;	
-		// }
 		pte[PTE_INDEX(virtual)].present = 1;
 		pte[PTE_INDEX(virtual)].rw = readOrWrite;
 		pte[PTE_INDEX(virtual)].priv = privilege;
 		pte[PTE_INDEX(virtual)].ceros = 0;
-	
 	}
 	pte[PTE_INDEX(virtual)].dirBase = fisica >> 12;
 
@@ -105,7 +95,7 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 	pte[0].priv = privilege;
 	pte[0].ceros=0;
 
-	//breakpoint();
+	
 
 	int i = 0;
 	while(i<1024){
@@ -116,7 +106,7 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 
 	mmu_mapear_pagina(fisica, rcr3(), fisica, 0, readOrWrite);
 	//void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char privilege, unsigned char readOrWrite){
-	//breakpoint();
+	
 	unsigned int* codigoTarea;
 	if(tipo==1){
 		codigoTarea= (unsigned int*) 0x11000;
@@ -128,15 +118,15 @@ unsigned int inicializar_directorio_paginas_tarea(unsigned int x, unsigned int y
 
 	unsigned int* punteroAFisica = (unsigned int*) fisica;
 	int k;
-		//breakpoint();
+		
 
-	for(k=0; k<1024; k++){ //BATATA MODIFICAR EL LIMITE DEL FOR
+	for(k=0; k<1024; k++){ 
 		punteroAFisica[k]=codigoTarea[k];
 	}
-	//breakpoint();
+	
 	mmu_unmapear_pagina(fisica,rcr3());
-	//breakpoint();
-	tlbflush(); //batata
+	
+	tlbflush(); 
 
 return cr3;
 
@@ -144,7 +134,7 @@ return cr3;
 
 
 
-void inicializar_directorio_paginas_kernel() {    //BATATA DEVOLVER CR3?
+void inicializar_directorio_paginas_kernel() { 
 	int i;
 	unsigned int* pageDirectory = (unsigned int*) 0x27000;
 	*(pageDirectory) = 0x28003;

@@ -22,14 +22,14 @@ void inicializarTarea(tarea* t, char tipo, unsigned int* cr3, unsigned char viva
 }
 
 unsigned short sched_proximo_indice(){
-	actualizarPantalla();
 	//print_int(sched.arreglo_h[sched.indiceH].indice_gdt,35,16+sched.indiceH,C_FG_BROWN);
 	unsigned int queArreglo = 0;
 	unsigned int i;
 	unsigned char tipoTarea = sched.actual->tipoInicial;
     //print_int(10,20,0,C_FG_GREEN);
     
-	if(sched.cantidadVivas > 1){
+	if(sched.cantidadVivas > 1 && sched.saltoDebug == 0){
+		actualizarPantalla();
 		while(queArreglo < 3){	
 			if(tipoTarea == 0){
     			i = 1;
@@ -43,12 +43,7 @@ unsigned short sched_proximo_indice(){
 					//UNA A VIVA
 					sched.indiceA = (sched.indiceA+i) % 5;
 
-					sched.actual = &sched.arreglo_a[sched.indiceA]; //batata
-				
-/*					print_int(sched.arreglo_a[sched.indiceA].indice_gdt,20,0,C_FG_RED);
-					print_int(sched.actual->indice_gdt,40,0,C_FG_GREEN);
-					print_int(sched.arreglo_h[sched.indiceA].indice_gdt,34,24,C_FG_RED);
-*/
+					sched.actual = &sched.arreglo_a[sched.indiceA]; 
 					sched.arreglo_a[sched.indiceA].clock = avanzar_clock(sched.arreglo_a[sched.indiceA].clock);
 					return sched.arreglo_a[sched.indiceA].indice_gdt;
 				}
@@ -95,7 +90,7 @@ unsigned short sched_proximo_indice(){
 			}
 		}
 	}
-	return 0;//batata
+	return 0;
 }
 
 void sched_inicializar(){	
@@ -111,7 +106,6 @@ void sched_inicializar(){
 		}
 		inicializarTarea(&sana, 0, &cr3tarea, 1, ind_gdt, 10+i, 10+i);
 		sched.arreglo_h[i] = sana;
-		//tss_completar(1+i,1+i,1,1,0x300); //Batata ver que onda r/w
 	}	
 	for (i = 0; i < 5; ++i){
 		tarea tipoA;
@@ -159,6 +153,8 @@ void sched_inicializar(){
 	pintar_tareas();
 
 	pintar_jugadores();
+	sched.modoDebugFlag=0;
+    sched.saltoDebug=0;
 
 }
 

@@ -91,11 +91,11 @@ start:
     imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
 
     ; Inicializar pantalla
-    call inicializar_pantalla  ;BATATA PONIENDO COLORES
+    call inicializar_pantalla  
     ;Imprimir el nombre del grupo 
     imprimir_texto_mp mostrarNombreGrupo_msg, mostrarNombreGrupo_len, 0x07, 0, (80 - mostrarNombreGrupo_len)
         
-    ; Inicializar el manejador de memoria ;BATATA ORDEN
+    ; Inicializar el manejador de memoria 
     call mmu_inicializar
 
     ; Inicializar el directorio de paginas
@@ -103,7 +103,7 @@ start:
 
     ; Cargar directorio de paginas
     xor eax, eax
-    mov eax, 0x27000 ;BATATA ESTO ES PAGE_DIRECTORY_BASE
+    mov eax, 0x27000 
     mov cr3, eax
 
     ; Habilitar paginacion

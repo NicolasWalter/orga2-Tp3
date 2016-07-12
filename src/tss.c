@@ -70,14 +70,13 @@ unsigned int tss_completar(unsigned int* cr3Tem, unsigned int x, unsigned int y,
 	unsigned int cr3Nuevo = inicializar_directorio_paginas_tarea(x, y, privilege, readOrWrite, tipo);
 	*(cr3Tem)=cr3Nuevo;
 
-	// //LA GRAN BATATA, VER COMO RELLENARLLa 
 	
 	tss_aCompletar->esp = 0x8001000;
 	tss_aCompletar->ebp = 0x8001000;
 	tss_aCompletar->cr3 = cr3Nuevo;
 	tss_aCompletar->eip = 0x8000000;
 	tss_aCompletar->esp0 = pilaNivel0;
-	tss_aCompletar->ss0 = 48;			//horacio tiene razon batata (selector de segmento, solo offset) 
+	tss_aCompletar->ss0 = 48;			//(selector de segmento, solo offset) 
 	tss_aCompletar->cs = 40 | USER_SEG;	//codig o usuario
 
 	tss_aCompletar->ss = 56 | USER_SEG;	//datos usuario
@@ -89,7 +88,7 @@ unsigned int tss_completar(unsigned int* cr3Tem, unsigned int x, unsigned int y,
 	tss_aCompletar->eflags = 0x202;		//0x202
 
 
-	gdt[slotLibreGdt] = (gdt_entry) { 		//BATATA ATOMICA, VER CON QUE RELLENAR TODO ESTO
+	gdt[slotLibreGdt] = (gdt_entry) { 	
         (unsigned short)    sizeof(tss)-1,	/* limit[0:15]  */
 		(unsigned int)      0,         		/* base[0:15]   */
 		(unsigned int)		0,				/* base[23:16]  */
@@ -111,6 +110,5 @@ unsigned int tss_completar(unsigned int* cr3Tem, unsigned int x, unsigned int y,
 	gdt[slotLibreGdt].base_31_24 = (unsigned int)tss_aCompletar >> 24;
 
 
-	return (slotLibreGdt<<3); //BATATA
- 
+	return (slotLibreGdt<<3);  
 }
